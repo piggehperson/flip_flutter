@@ -68,13 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text(widget.title),
         backgroundColor: new Color.fromARGB(0, 0, 0, 0),
         elevation: 0.0,
-        actions: <Widget>[
+        /*actions: <Widget>[
           new IconButton( // action button
             icon: new Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {  },
           ),
-        ],
+        ],*/
       ),
       bottomNavigationBar: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
             new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice'), ),
             new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin'), ),
             new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List'), ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.settings_applications), title: new Text('Custom dice'), ),
+            new BottomNavigationBarItem(icon: new Icon(Icons.tune), title: new Text('Custom dice'), ),
           ], currentIndex: index, onTap: (int index) { setState((){ this.index = index; }); },
       ),
       body: new Stack(
