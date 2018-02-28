@@ -68,13 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text(widget.title),
         backgroundColor: new Color.fromARGB(0, 0, 0, 0),
         elevation: 0.0,
-        /*actions: <Widget>[
-          new IconButton( // action button
-            icon: new Icon(Icons.settings),
-            tooltip: 'Settings',
-            onPressed: () {  },
-          ),
-        ],*/
       ),
       bottomNavigationBar: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
