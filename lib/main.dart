@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Flip',
       theme: new ThemeData(
-        primaryColor: new Color.fromARGB(255, 255, 193, 7),
+        primaryColor: Colors.amber,
         accentColor: Colors.amberAccent,
       ),
       home: new MyHomePage(title: 'Flip'),
@@ -70,13 +70,13 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 0.0,
       ),
       bottomNavigationBar: new BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
+          type: BottomNavigationBarType.shifting,
           fixedColor: Colors.amber.shade700,
           items: <BottomNavigationBarItem>[
-            new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice'), ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin'), ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List'), ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.tune), title: new Text('Custom dice'), ),
+            new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice'), backgroundColor: Colors.red, ),
+            new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin'), backgroundColor: Colors.blue, ),
+            new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List'), backgroundColor: Colors.green, ),
+            new BottomNavigationBarItem(icon: new Icon(Icons.tune), title: new Text('Custom dice'), backgroundColor: Colors.deepPurple, ),
           ], currentIndex: index, onTap: (int index) { setState((){ this.index = index; }); },
       ),
       body: new Stack(
@@ -87,11 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
               enabled: index == 0,
               child: new Scaffold(backgroundColor: Colors.red.shade100,
                 floatingActionButton: new FloatingActionButton(
-                  onPressed: _incrementCounter,
+                  onPressed: (){Scaffold.of(context).showSnackBar(new SnackBar(content: new Text('Hello World!')));},
                   backgroundColor: Colors.redAccent,
-                  tooltip: 'Go',
+                  tooltip: 'Roll',
                   child: new Icon(Icons.casino),
                 ),
+                body: new FlutterLogo(size: 300.0,), //TODO: fill this with content
               ),
             ),
           ),
@@ -103,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 floatingActionButton: new FloatingActionButton(
                   onPressed: _incrementCounter,
                   backgroundColor: Colors.blueAccent,
-                  tooltip: 'Go',
+                  tooltip: 'Flip',
                   child: new Icon(Icons.casino),
                 ),
               ),
@@ -117,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 floatingActionButton: new FloatingActionButton(
                   onPressed: _incrementCounter,
                   backgroundColor: Colors.greenAccent,
-                  tooltip: 'Go',
+                  tooltip: 'Pick',
                   child: new Icon(Icons.casino),
                 ),
               ),
@@ -131,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 floatingActionButton: new FloatingActionButton(
                   onPressed: _incrementCounter,
                   backgroundColor: Colors.deepPurpleAccent,
-                  tooltip: 'Go',
+                  tooltip: 'Roll',
                   child: new Icon(Icons.casino),
                 ),
               ),
