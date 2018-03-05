@@ -51,6 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _snackbar() {
+    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text('Hello World!')));
+  }
+
   int index = 0;
 
   @override
@@ -70,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 0.0,
       ),
       bottomNavigationBar: new BottomNavigationBar(
-          type: BottomNavigationBarType.shifting,
+          type: BottomNavigationBarType.fixed,
           fixedColor: Colors.amber.shade700,
           items: <BottomNavigationBarItem>[
             new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice'), backgroundColor: Colors.red, ),
@@ -85,57 +89,28 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: index != 0,
             child: new TickerMode(
               enabled: index == 0,
-              child: new Scaffold(backgroundColor: Colors.red.shade100,
-                floatingActionButton: new FloatingActionButton(
-                  onPressed: (){Scaffold.of(context).showSnackBar(new SnackBar(content: new Text('Hello World!')));},
-                  backgroundColor: Colors.redAccent,
-                  tooltip: 'Roll',
-                  child: new Icon(Icons.casino),
-                ),
-                body: new FlutterLogo(size: 300.0,), //TODO: fill this with content
-              ),
+              child: new Placeholder(color: Colors.red.shade100),
             ),
           ),
           new Offstage(
             offstage: index != 1,
             child: new TickerMode(
               enabled: index == 1,
-              child: new Scaffold(backgroundColor: Colors.blue.shade100,
-                floatingActionButton: new FloatingActionButton(
-                  onPressed: _incrementCounter,
-                  backgroundColor: Colors.blueAccent,
-                  tooltip: 'Flip',
-                  child: new Icon(Icons.casino),
-                ),
-              ),
+              child: new Placeholder(color: Colors.blue.shade100),
             ),
           ),
           new Offstage(
             offstage: index != 2,
             child: new TickerMode(
-              enabled: index == 3,
-              child: new Scaffold(backgroundColor: Colors.green.shade100,
-                floatingActionButton: new FloatingActionButton(
-                  onPressed: _incrementCounter,
-                  backgroundColor: Colors.greenAccent,
-                  tooltip: 'Pick',
-                  child: new Icon(Icons.casino),
-                ),
-              ),
+              enabled: index == 2,
+              child: new Placeholder(color: Colors.green.shade100),
             ),
           ),
           new Offstage(
             offstage: index != 3,
             child: new TickerMode(
               enabled: index == 3,
-              child: new Scaffold(backgroundColor: Colors.deepPurple.shade100,
-                floatingActionButton: new FloatingActionButton(
-                  onPressed: _incrementCounter,
-                  backgroundColor: Colors.deepPurpleAccent,
-                  tooltip: 'Roll',
-                  child: new Icon(Icons.casino),
-                ),
-              ),
+              child: new Placeholder(color: Colors.deepPurple.shade100),
             ),
           ),
         ],
