@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: index != 0,
             child: new TickerMode(
               enabled: index == 0,
-              child: new Placeholder(color: Colors.red.shade100),
+              child: new DicePage(),
             ),
           ),
           new Offstage(
@@ -115,6 +115,27 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+    );
+  }
+}
+class DicePage extends StatefulWidget {
+  const DicePage();
+
+  @override
+  _DicePageState createState() => new _DicePageState();
+}
+
+class _DicePageState extends State<DicePage> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Center(child: new Column(children: <Widget>[
+        new Text('You rolled a'),
+        new Text('0'),
+      ],),),
+      floatingActionButton: new FloatingActionButton(onPressed: null, child: new Icon(Icons.casino), tooltip: 'Roll',),
     );
   }
 }
