@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
             new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice'), backgroundColor: Colors.red, ),
             new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin'), backgroundColor: Colors.blue, ),
             new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List'), backgroundColor: Colors.green, ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.tune), title: new Text('Custom dice'), backgroundColor: Colors.deepPurple, ),
+            new BottomNavigationBarItem(icon: new Icon(Icons.assistant), title: new Text('Custom dice'), backgroundColor: Colors.deepPurple, ),
           ], currentIndex: index, onTap: (int index) { setState((){ this.index = index; }); },
       ),
       body: new Stack(
@@ -132,8 +132,8 @@ class _DicePageState extends State<DicePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Center(child: new Column(children: <Widget>[
-        new Text('You rolled a'),
-        new Text('0'),
+        new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
+        new Text('0', style: new TextStyle(fontSize: 48.0, color: Colors.amberAccent)),
       ],),),
       floatingActionButton: new FloatingActionButton(onPressed: null, child: new Icon(Icons.casino), tooltip: 'Roll',),
     );
