@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(new MyApp());
@@ -127,15 +128,26 @@ class DicePage extends StatefulWidget {
 
 class _DicePageState extends State<DicePage> {
 
+  int diceNumber = 0;
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Center(child: new Column(children: <Widget>[
         new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
-        new Text('0', style: new TextStyle(fontSize: 48.0, color: Colors.amberAccent)),
+        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Colors.amberAccent)),
       ],),),
-      floatingActionButton: new FloatingActionButton(onPressed: null, child: new Icon(Icons.casino), tooltip: 'Roll',),
+      floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Roll',),
     );
+  }
+  int _randomize(){
+    final random = new Random();
+    return 1 + random.nextInt(6);
+  }
+
+  void _onPressed(){
+    setState((){
+      diceNumber = _randomize();
+    });
   }
 }
