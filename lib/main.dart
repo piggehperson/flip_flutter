@@ -135,7 +135,7 @@ class _DicePageState extends State<DicePage> {
     return new Scaffold(
       body: new Center(child: new Column(children: <Widget>[
         new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
-        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Colors.amberAccent)),
+        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700)),
       ],),),
       floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Roll',),
     );
