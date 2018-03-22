@@ -16,6 +16,10 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.amberAccent,
       ),
       home: new MyHomePage(title: 'Flip'),
+      routes: <String, WidgetBuilder> {
+        '/home': (BuildContext context) => new MyHomePage(),
+        '/settings' : (BuildContext context) => new SettingsPage()
+      },
     );
   }
 }
@@ -39,23 +43,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  void _snackbar() {
-    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text('Hello World!')));
-  }
-
   int index = 0;
 
   @override
@@ -73,6 +60,11 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text(widget.title),
         backgroundColor: new Color.fromARGB(0, 0, 0, 0),
         elevation: 0.0,
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.settings), onPressed: (){
+            Navigator.of(context).pushNamed('/settings');
+          })
+        ],
       ),
       bottomNavigationBar: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -149,5 +141,24 @@ class _DicePageState extends State<DicePage> {
     setState((){
       diceNumber = _randomize();
     });
+  }
+}
+class SettingsPage extends StatefulWidget {
+  const SettingsPage();
+
+  @override
+  _SettingsPageState createState() => new _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(title: new Text('Settings', style: new TextStyle(inherit: true, color: Colors.amber.shade700),), backgroundColor: Colors.white, leading: new IconButton(icon: new Icon(Icons.arrow_back), color: Colors.amber.shade700, onPressed: (){
+        Navigator.of(context).pop(false);
+      }),),
+      body: new Center(child: new Text('Blank Settings page')),
+    );
   }
 }
