@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: new Color.fromARGB(0, 0, 0, 0),
         elevation: 0.0,
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.settings), onPressed: (){
+          new IconButton(icon: new Icon(Icons.settings), tooltip: 'Settings', onPressed: (){
             Navigator.of(context).pushNamed('/settings');
           })
         ],
@@ -155,7 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(title: new Text('Settings', style: new TextStyle(inherit: true, color: Colors.amber.shade700),), backgroundColor: Colors.white, leading: new IconButton(icon: new Icon(Icons.arrow_back), color: Colors.amber.shade700, onPressed: (){
+      appBar: new AppBar(title: new Text('Settings', style: new TextStyle(inherit: true, color: Colors.amber.shade700),), backgroundColor: Colors.white, leading: new IconButton(icon: new Icon(Icons.arrow_back), tooltip: 'Back', color: Colors.amber.shade700, onPressed: (){
         Navigator.of(context).pop(false);
       }),),
       body: new Center(child: new Text('Blank Settings page')),
