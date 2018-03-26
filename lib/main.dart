@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title),
-        backgroundColor: new Color.fromARGB(0, 0, 0, 0),
+        backgroundColor: Colors.transparent,
         elevation: 0.0,
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.settings), tooltip: 'Settings', onPressed: (){
@@ -151,14 +151,40 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool useDarkTheme = false;
+  Color _backgroundColor = new Color.fromARGB(255, 250, 250, 250);
+  Color _appBarColor = new Color.fromARGB(255, 255, 255, 255);
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(title: new Text('Settings', style: new TextStyle(inherit: true, color: Colors.amber.shade700),), backgroundColor: Colors.white, leading: new IconButton(icon: new Icon(Icons.arrow_back), tooltip: 'Back', color: Colors.amber.shade700, onPressed: (){
-        Navigator.of(context).pop(false);
-      }),),
-      body: new Center(child: new Text('Blank Settings page')),
+      backgroundColor: _backgroundColor,
+      appBar: new AppBar(title: new Text('Settings', style: new TextStyle(inherit: true, color: Colors.amber.shade700),),
+        backgroundColor: _appBarColor,
+        leading: new IconButton(icon: new Icon(Icons.arrow_back), tooltip: 'Back', color: Colors.amber.shade700, onPressed: (){
+          Navigator.of(context).pop(false);
+        }),),
+      body: new ListView(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0), children: <Widget>[new Row(children: <Widget>[
+        new Expanded(child: new Row(children: <Widget>[new Icon(Icons.brightness_low, semanticLabel: 'Moon icon',),
+        new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0)),
+        new Text('Dark theme', style: new TextStyle(fontSize: 16.0),),
+       ],)),
+        new Switch(value: useDarkTheme, onChanged: (bool value){
+          setState((){
+            useDarkTheme = value;
+            switch (value){
+              case true:
+                _backgroundColor = new Color.fromARGB(255, 30, 30, 30);
+                _appBarColor = new Color.fromARGB(255, 48, 48, 48);
+                break;
+              case false:
+                _backgroundColor = new Color.fromARGB(255, 250, 250, 250);
+                _appBarColor = new Color.fromARGB(255, 255, 255, 255);
+                break;
+            }
+          });
+        },),
+      ],)],),
     );
   }
 }
