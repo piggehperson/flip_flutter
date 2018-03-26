@@ -4,6 +4,7 @@ description: Learning Flutter by porting an Android app
 dependencies:
   flutter:
     sdk: flutter
+  shared_preferences: ^0.4.0
 
 dev_dependencies:
   flutter_test:
