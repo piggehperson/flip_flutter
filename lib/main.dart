@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(new MyApp());
@@ -89,21 +90,21 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: index != 1,
             child: new TickerMode(
               enabled: index == 1,
-              child: new Placeholder(color: Colors.blue.shade100),
+              child: new CoinPage(),
             ),
           ),
           new Offstage(
             offstage: index != 2,
             child: new TickerMode(
               enabled: index == 2,
-              child: new Placeholder(color: Colors.green.shade100),
+              child: new Placeholder(color: Colors.blue),
             ),
           ),
           new Offstage(
             offstage: index != 3,
             child: new TickerMode(
               enabled: index == 3,
-              child: new Placeholder(color: Colors.deepPurple.shade100),
+              child: new Placeholder(color: Colors.green),
             ),
           ),
         ],
@@ -125,10 +126,11 @@ class _DicePageState extends State<DicePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Center(child: new Column(children: <Widget>[
+      body: new Align(alignment: new Alignment(0.0,-0.3), child:
+      new Column(children: <Widget>[
         new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
         new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700)),
-      ],),),
+      ])),
       floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Roll',),
     );
   }
@@ -143,6 +145,54 @@ class _DicePageState extends State<DicePage> {
     });
   }
 }
+
+class CoinPage extends StatefulWidget {
+  const CoinPage();
+
+  @override
+  _CoinPageState createState() => new _CoinPageState();
+}
+
+class _CoinPageState extends State<CoinPage> {
+
+  int coinNumber = 0;
+  String coinString = '0';
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Align(alignment: new Alignment(0.0,-0.3), child:
+      new Column(children: <Widget>[
+        new Text('You flipped', style: new TextStyle(fontSize: 24.0)),
+        new Text(coinString, style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700)),
+      ])),
+      floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Flip',),
+    );
+  }
+  int _randomize(){
+    final random = new Random();
+    return random.nextInt(2);
+  }
+
+  void _onPressed(){
+    setState((){
+      coinNumber = _randomize();
+      switch (coinNumber){
+        case 0:
+          coinString = 'Heads';
+          break;
+        case 1:
+          coinString = 'Tails';
+          break;
+        default:
+          coinString = 'error';
+          break;
+      }
+    });
+  }
+}
+
+//here's the Settings page from the gear on the toolbar
 class SettingsPage extends StatefulWidget {
   const SettingsPage();
 
@@ -182,9 +232,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 _appBarColor = new Color.fromARGB(255, 255, 255, 255);
                 break;
             }
+                () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.setBool('use_dark_theme', value);
+                  print('stored ' + value.toString() + ' to SharedPrefs');
+            };
           });
         },),
       ],)],),
     );
   }
+
+
 }
