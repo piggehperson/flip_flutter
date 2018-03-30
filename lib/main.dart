@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -97,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: index != 2,
             child: new TickerMode(
               enabled: index == 2,
-              child: new Placeholder(color: Colors.blue),
+              child: new ListPage(),
             ),
           ),
           new Offstage(
@@ -189,6 +190,25 @@ class _CoinPageState extends State<CoinPage> {
           break;
       }
     });
+  }
+}
+
+class ListPage extends StatefulWidget {
+  const ListPage();
+
+  @override
+  _ListPageState createState() => new _ListPageState();
+}
+
+class _ListPageState extends State<ListPage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListView(scrollDirection: Axis.vertical,
+      children: <Widget>[
+        new Row(children: <Widget>[new Text('List item'), new IconButton(icon: new Icon(Icons.remove), onPressed: null)],)
+      ],
+    );
   }
 }
 
