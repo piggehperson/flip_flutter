@@ -207,13 +207,13 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return new ListView(scrollDirection: Axis.vertical,
       children: <Widget>[
-        new ListChild(/*text: 'list coming soon!!'*/)
+        new ListItem(/*text: 'list coming soon!!'*/)
       ],
     );
   }
 }
 
-class ListChild extends StatelessWidget {
+class ListItem extends StatelessWidget {
   //ListChild({this.text})
 
   //final String text;
@@ -226,7 +226,7 @@ class ListChild extends StatelessWidget {
         children: <Widget>[
           new Expanded(
             child: new Text(/*text*/'list coming soon!!',
-                style: Theme.of(context).textTheme.body1),
+                style: Theme.of(context).textTheme.title),
           ),
           new IconButton(
               icon: new Icon(Icons.close, color: Theme.of(context).textTheme.body1.color,),
@@ -268,7 +268,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0)),
                 new Expanded(
                   child: new Text('Dark theme',
-                    style: Theme.of(context).textTheme.body1),
+                    style: Theme.of(context).textTheme.title),
                 ),
                 new Switch(
                     value: useDarkTheme,
