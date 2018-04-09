@@ -272,7 +272,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 new Switch(
                     value: useDarkTheme,
-                    onChanged: (bool value){switchTheme(value);}
+                    onChanged: (bool value){
+                      switchTheme(value);
+                      setState((){useDarkTheme = value;});
+                    }
                 )
               ],
             ),
