@@ -14,8 +14,9 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Flip',
       theme: new ThemeData(
-        primaryColor: Colors.amber,
-        accentColor: Colors.amberAccent,
+        primaryColor: Colors.amber.shade700,
+        accentColor: Colors.amberAccent.shade400,
+        brightness: Brightness.light,
       ),
       home: new MyHomePage(title: 'Flip'),
       routes: <String, WidgetBuilder> {
@@ -59,18 +60,18 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
+        title: new Text(widget.title, style: Theme.of(context).textTheme.title,),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.settings), tooltip: 'Settings', onPressed: (){
+          new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
             Navigator.of(context).pushNamed('/settings');
           })
         ],
       ),
       bottomNavigationBar: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          fixedColor: Colors.amber.shade700,
+
           items: <BottomNavigationBarItem>[
             new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice'), backgroundColor: Colors.red, ),
             new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin'), backgroundColor: Colors.blue, ),
@@ -130,7 +131,7 @@ class _DicePageState extends State<DicePage> {
       body: new Align(alignment: new Alignment(0.0,-0.3), child:
       new Column(children: <Widget>[
         new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
-        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700)),
+        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Theme.of(context).primaryColor)),
       ])),
       floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Roll',),
     );
@@ -206,8 +207,33 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return new ListView(scrollDirection: Axis.vertical,
       children: <Widget>[
-        new Row(children: <Widget>[new Text('List item'), new IconButton(icon: new Icon(Icons.remove), onPressed: null)],)
+        new ListChild(/*text: 'list coming soon!!'*/)
       ],
+    );
+  }
+}
+
+class ListChild extends StatelessWidget {
+  //ListChild({this.text})
+
+  //final String text;
+
+  @override
+  Widget build(BuildContext context){
+    return new Padding(
+      padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: new Row(
+        children: <Widget>[
+          new Expanded(
+            child: new Text(/*text*/'list coming soon!!',
+                style: Theme.of(context).textTheme.body1),
+          ),
+          new IconButton(
+              icon: new Icon(Icons.close, color: Theme.of(context).textTheme.body1.color,),
+              onPressed: (){}
+          )
+        ],
+      ),
     );
   }
 }
@@ -222,46 +248,53 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool useDarkTheme = false;
-  Color _backgroundColor = new Color.fromARGB(255, 250, 250, 250);
-  Color _appBarColor = new Color.fromARGB(255, 255, 255, 255);
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: _backgroundColor,
-      appBar: new AppBar(title: new Text('Settings', style: new TextStyle(inherit: true, color: Colors.amber.shade700),),
-        backgroundColor: _appBarColor,
-        leading: new IconButton(icon: new Icon(Icons.arrow_back), tooltip: 'Back', color: Colors.amber.shade700, onPressed: (){
-          Navigator.of(context).pop(false);
-        }),),
-      body: new ListView(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0), children: <Widget>[new Row(children: <Widget>[
-        new Expanded(child: new Row(children: <Widget>[new Icon(Icons.brightness_low, semanticLabel: 'Moon icon',),
-        new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0)),
-        new Text('Dark theme', style: new TextStyle(fontSize: 16.0),),
-       ],)),
-        new Switch(value: useDarkTheme, onChanged: (bool value){
-          setState((){
-            useDarkTheme = value;
-            switch (value){
-              case true:
-                _backgroundColor = new Color.fromARGB(255, 30, 30, 30);
-                _appBarColor = new Color.fromARGB(255, 48, 48, 48);
-                break;
-              case false:
-                _backgroundColor = new Color.fromARGB(255, 250, 250, 250);
-                _appBarColor = new Color.fromARGB(255, 255, 255, 255);
-                break;
-            }
-                () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.setBool('use_dark_theme', value);
-                  print('stored ' + value.toString() + ' to SharedPrefs');
-            };
-          });
-        },),
-      ],)],),
+      body: new ListView(
+        children: <Widget>[
+          new AppBar(
+            leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,), onPressed: (){Navigator.of(context).pop(false);}),
+            title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+          ),
+          new Padding(
+            padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: new Row(
+              children: <Widget>[
+                new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
+                new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0)),
+                new Expanded(
+                  child: new Text('Dark theme',
+                    style: Theme.of(context).textTheme.body1),
+                ),
+                new Switch(
+                    value: useDarkTheme,
+                    onChanged: (bool value){switchTheme(value);}
+                )
+              ],
+            ),
+          )
+        ],
+      )
     );
   }
 
+  void switchTheme(bool isDark){
+    switch (isDark){
+      case true:
 
+        break;
+      case false:
+
+        break;
+    }
+        () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('use_dark_theme', isDark);
+      print('stored ' + isDark.toString() + ' to SharedPrefs');
+    };
+  }
 }
