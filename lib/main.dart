@@ -128,19 +128,28 @@ class _DicePageState extends State<DicePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: new Align(alignment: new Alignment(0.0,-0.3), child:
-      new Column(children: <Widget>[
-        new Text('You rolled a', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans')),
-        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, fontFamily: 'ProductSans', color: Theme.of(context).primaryColor), ),
-      ])),
-      floatingActionButton: new FloatingActionButton(onPressed: _onPressed, tooltip: 'Roll',
-        child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-        new Icon(Icons.casino),
-          new Text('ROLL', style: Theme.of(context).textTheme.button,)
-        ],
-    ),
-    )
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: new Align(
+          alignment: new FractionalOffset(0.5,0.25),
+          child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Text('You rolled a', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans',)),
+                new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700, fontFamily: 'ProductSans',)),
+              ]
+          ),
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: _onPressed, tooltip: 'Roll',
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Icon(Icons.casino),
+              new Text('ROLL', style: Theme.of(context).textTheme.button,)
+            ],
+          ),
+        )
     );
   }
   int _randomize(){
@@ -170,15 +179,31 @@ class _CoinPageState extends State<CoinPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Align(alignment: new Alignment(0.0,-0.3), child:
-      new Column(children: <Widget>[
-        new Text('You flipped', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans',)),
-        new Text(coinString, style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700, fontFamily: 'ProductSans',)),
-      ])),
-      floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Flip',),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: new Align(
+          alignment: new FractionalOffset(0.5,0.25),
+          child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Text('You flipped', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans',)),
+                new Text(coinString, style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700, fontFamily: 'ProductSans',)),
+              ]
+          ),
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: _onPressed, tooltip: 'Roll',
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Icon(Icons.casino),
+              new Text('FLIP', style: Theme.of(context).textTheme.button,)
+            ],
+          ),
+        )
     );
   }
+
   int _randomize(){
     final random = new Random();
     return random.nextInt(2);
