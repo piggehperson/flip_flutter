@@ -131,8 +131,8 @@ class _DicePageState extends State<DicePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: new Align(alignment: new Alignment(0.0,-0.3), child:
       new Column(children: <Widget>[
-        new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
-        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Theme.of(context).primaryColor)),
+        new Text('You rolled a', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans')),
+        new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, fontFamily: 'ProductSans', color: Theme.of(context).primaryColor), ),
       ])),
       floatingActionButton: new FloatingActionButton(onPressed: _onPressed, tooltip: 'Roll',
         child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -172,8 +172,8 @@ class _CoinPageState extends State<CoinPage> {
     return new Scaffold(
       body: new Align(alignment: new Alignment(0.0,-0.3), child:
       new Column(children: <Widget>[
-        new Text('You flipped', style: new TextStyle(fontSize: 24.0)),
-        new Text(coinString, style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700)),
+        new Text('You flipped', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans',)),
+        new Text(coinString, style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700, fontFamily: 'ProductSans',)),
       ])),
       floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Flip',),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -258,6 +258,8 @@ class ListItem extends StatelessWidget {
         child: new Padding(
             padding: new EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
           child: new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               new Expanded(
                 child: widget,
