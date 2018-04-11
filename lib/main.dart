@@ -170,6 +170,7 @@ class _CoinPageState extends State<CoinPage> {
         new Text(coinString, style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700)),
       ])),
       floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Flip',),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
   int _randomize(){
