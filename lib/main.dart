@@ -128,6 +128,7 @@ class _DicePageState extends State<DicePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: new Align(alignment: new Alignment(0.0,-0.3), child:
       new Column(children: <Widget>[
         new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
@@ -207,26 +208,29 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return new ListView(scrollDirection: Axis.vertical,
       children: <Widget>[
-        new ListItem(/*text: 'list coming soon!!'*/)
+        new ListItem(text: 'list coming soon!!'),
+        new ListItem(text: 'test list item 2!'),
+        new ListItem(text: 'This item has a really looooooooooooooooooooooooooong string to check the way text wraps across multiple lines and make sure it is working fine'),
+        new ListItem(text: 'flutter is fun!'),
       ],
     );
   }
 }
 
 class ListItem extends StatelessWidget {
-  //ListChild({this.text})
+  ListItem({this.text});
 
-  //final String text;
+  final String text;
 
   @override
   Widget build(BuildContext context){
     return new Padding(
-      padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),
       child: new Row(
         children: <Widget>[
           new Expanded(
-            child: new Text(/*text*/'list coming soon!!',
-                style: Theme.of(context).textTheme.title),
+            child: new Text(text,
+                style: Theme.of(context).textTheme.subhead),
           ),
           new IconButton(
               icon: new Icon(Icons.close, color: Theme.of(context).textTheme.body1.color,),
@@ -268,7 +272,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0)),
                 new Expanded(
                   child: new Text('Dark theme',
-                    style: Theme.of(context).textTheme.title),
+                    style: Theme.of(context).textTheme.subhead),
                 ),
                 new Switch(
                     value: useDarkTheme,
