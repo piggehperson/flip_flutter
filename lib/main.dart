@@ -209,19 +209,20 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return new ListView(scrollDirection: Axis.vertical,
       children: <Widget>[
-        new ListItem(text: 'list coming soon!!'),
-        new ListItem(text: 'test list item 2!'),
-        new ListItem(text: 'This item has a really looooooooooooooooooooooooooong string to check the way text wraps across multiple lines and make sure it is working fine'),
-        new ListItem(text: 'flutter is fun!'),
+        new ListItem(widget: new Text('list coming soon!!', style: Theme.of(context).textTheme.subhead),),
+        new ListItem(widget: new Text('this is list item 2', style: Theme.of(context).textTheme.subhead), shaded: true,),
+        new ListItem(widget: new Text('This item has a really looooooooooooooooooooooooooong string to check the way text wraps across multiple lines and make sure it is working fine', style: Theme.of(context).textTheme.subhead), shaded: false,),
+        new ListItem(widget: new Text('flutter is fun', style: Theme.of(context).textTheme.subhead),),
       ],
     );
   }
 }
 
 class ListItem extends StatelessWidget {
-  ListItem({this.text});
+  ListItem({this.widget, this.shaded});
 
-  final String text;
+  final bool shaded;
+  Widget widget;
 
   @override
   Widget build(BuildContext context){
@@ -230,11 +231,11 @@ class ListItem extends StatelessWidget {
       child: new Row(
         children: <Widget>[
           new Expanded(
-            child: new Text(text,
-                style: Theme.of(context).textTheme.subhead),
+            child: widget,
           ),
           new IconButton(
               icon: new Icon(Icons.close, color: Theme.of(context).textTheme.body1.color,),
+              tooltip: 'Remove item',
               onPressed: (){}
           )
         ],
