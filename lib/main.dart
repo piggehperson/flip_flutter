@@ -221,7 +221,7 @@ class _ListPageState extends State<ListPage> {
             new ListView.builder(
               itemCount: 100,
               itemBuilder: (BuildContext context, int index) {
-                return new ListItem(widget: new Text('Dummy item $index', style: Theme.of(context).textTheme.subhead));
+                return new ListItem(index: index, widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead));
               },
             )
           )
@@ -232,27 +232,45 @@ class _ListPageState extends State<ListPage> {
 }
 
 class ListItem extends StatelessWidget {
-  ListItem({this.widget, this.shaded});
+  ListItem({this.widget, this.shaded, this.index});
 
   final bool shaded;
   Widget widget;
+  final int index;
+  Color _shadeColor = Colors.transparent;
 
   @override
   Widget build(BuildContext context){
+    if (shaded == null && index != null){
+      if (!index.isEven){
+        _shadeColor = Colors.grey.shade200;
+      }
+    }
+
+
     return new Padding(
-      padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),
-      child: new Row(
-        children: <Widget>[
-          new Expanded(
-            child: widget,
+      padding: new EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0), //Padding for the Material itself
+        /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
+      child: new Material(
+        elevation: 0.0,
+        color: _shadeColor,
+        borderRadius: new BorderRadius.all(const Radius.circular(8.0)),
+        child: new Padding(
+            padding: new EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
+          child: new Row(
+            children: <Widget>[
+              new Expanded(
+                child: widget,
+              ),
+              new IconButton(
+                  icon: new Icon(Icons.close, color: Theme.of(context).textTheme.body1.color,),
+                  tooltip: 'Remove item',
+                  onPressed: (){}
+              )
+            ],
           ),
-          new IconButton(
-              icon: new Icon(Icons.close, color: Theme.of(context).textTheme.body1.color,),
-              tooltip: 'Remove item',
-              onPressed: (){}
-          )
-        ],
-      ),
+        )
+      )
     );
   }
 }
