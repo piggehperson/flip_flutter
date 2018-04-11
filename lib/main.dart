@@ -134,7 +134,13 @@ class _DicePageState extends State<DicePage> {
         new Text('You rolled a', style: new TextStyle(fontSize: 24.0)),
         new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Theme.of(context).primaryColor)),
       ])),
-      floatingActionButton: new FloatingActionButton(onPressed: _onPressed, child: new Icon(Icons.casino), tooltip: 'Roll',),
+      floatingActionButton: new FloatingActionButton(onPressed: _onPressed, tooltip: 'Roll',
+        child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        new Icon(Icons.casino),
+          new Text('ROLL', style: Theme.of(context).textTheme.button,)
+        ],
+    ),
+    )
     );
   }
   int _randomize(){
@@ -207,12 +213,19 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new ListView(scrollDirection: Axis.vertical,
+    return new Column(mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new ListItem(widget: new Text('list coming soon!!', style: Theme.of(context).textTheme.subhead),),
-        new ListItem(widget: new Text('this is list item 2', style: Theme.of(context).textTheme.subhead), shaded: true,),
-        new ListItem(widget: new Text('This item has a really looooooooooooooooooooooooooong string to check the way text wraps across multiple lines and make sure it is working fine', style: Theme.of(context).textTheme.subhead), shaded: false,),
-        new ListItem(widget: new Text('flutter is fun', style: Theme.of(context).textTheme.subhead),),
+        new Divider(height: 1.0,), //Adds a thin divider line below the App Bar
+        new Expanded(child:
+          new Scrollbar(child:
+            new ListView.builder(
+              itemCount: 100,
+              itemBuilder: (BuildContext context, int index) {
+                return new ListItem(widget: new Text('Dummy item $index', style: Theme.of(context).textTheme.subhead));
+              },
+            )
+          )
+        )
       ],
     );
   }
