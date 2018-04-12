@@ -135,8 +135,8 @@ class _DicePageState extends State<DicePage> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new Text('You rolled a', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans',)),
-                new Text(diceNumber.toString(), style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700, fontFamily: 'ProductSans',)),
+                new Text('You rolled a', style: Theme.of(context).textTheme.headline.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
               ]
           ),
         ),
@@ -181,8 +181,8 @@ class _CoinPageState extends State<CoinPage> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new Text('You flipped', style: new TextStyle(fontSize: 24.0, fontFamily: 'ProductSans',)),
-                new Text(coinString, style: new TextStyle(fontSize: 48.0, color: Colors.amber.shade700, fontFamily: 'ProductSans',)),
+                new Text('You flipped', style: Theme.of(context).textTheme.headline.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                new Text(coinString, style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
               ]
           ),
         ),
@@ -239,7 +239,11 @@ class _ListPageState extends State<ListPage> {
           new ListView.builder(
             itemCount: fakeListLength,
             itemBuilder: (BuildContext context, int index) {
-              return new ListItem(index: index, listLength: fakeListLength, widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead));
+              return new ListItem(
+                  index: index,
+                  listLength: fakeListLength,
+                  widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color))
+              );
             },
           )
           )
@@ -279,7 +283,7 @@ class ListItem extends StatelessWidget {
     } else if (index == listLength - 1){
       outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,88.0);
     } else {
-      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0)
+      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0);
     }
 
 
@@ -300,7 +304,7 @@ class ListItem extends StatelessWidget {
                 child: widget,
               ),
               new IconButton(
-                  icon: new Icon(Icons.close, color: Theme.of(context).textTheme.body1.color,),
+                  icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
                   tooltip: 'Remove item',
                   onPressed: (){}
               )
