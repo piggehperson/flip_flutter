@@ -140,16 +140,11 @@ class _DicePageState extends State<DicePage> {
               ]
           ),
         ),
-        floatingActionButton: new FloatingActionButton(
-          onPressed: _onPressed, tooltip: 'Roll',
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Icon(Icons.casino),
-              new Text('ROLL', style: Theme.of(context).textTheme.button,)
-            ],
-          ),
-        )
+        floatingActionButton: new FloatingActionButton.extended(
+          onPressed: _onPressed,
+          icon: const Icon(Icons.casino,),
+          label: new Text('ROLL'),
+        ),
     );
   }
   int _randomize(){
@@ -191,16 +186,11 @@ class _CoinPageState extends State<CoinPage> {
               ]
           ),
         ),
-        floatingActionButton: new FloatingActionButton(
-          onPressed: _onPressed, tooltip: 'Roll',
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Icon(Icons.casino),
-              new Text('FLIP', style: Theme.of(context).textTheme.button,)
-            ],
-          ),
-        )
+      floatingActionButton: new FloatingActionButton.extended(
+        onPressed: _onPressed,
+        icon: const Icon(Icons.casino,),
+        label: new Text('FLIP'),
+      ),
     );
   }
 
@@ -236,32 +226,43 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
 
+  int fakeListLength = 100;
+
   @override
   Widget build(BuildContext context) {
-    return new Column(mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new Divider(height: 1.0,), //Adds a thin divider line below the App Bar
-        new Expanded(child:
+    return new Scaffold(
+      body: new Column(mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new Divider(height: 1.0,), //Adds a thin divider line below the App Bar
+          new Expanded(child:
           new Scrollbar(child:
-            new ListView.builder(
-              itemCount: 100,
-              itemBuilder: (BuildContext context, int index) {
-                return new ListItem(index: index, widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead));
-              },
-            )
+          new ListView.builder(
+            itemCount: fakeListLength,
+            itemBuilder: (BuildContext context, int index) {
+              return new ListItem(index: index, listLength: fakeListLength, widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead));
+            },
           )
-        )
-      ],
+          )
+          )
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: new FloatingActionButton.extended(
+        onPressed: (){},
+        icon: const Icon(Icons.casino,),
+        label: new Text('PICK'),
+      ),
     );
   }
 }
 
 class ListItem extends StatelessWidget {
-  ListItem({this.widget, this.shaded, this.index});
+  ListItem({this.widget, this.shaded, this.index, this.listLength});
 
   final bool shaded;
   Widget widget;
   final int index;
+  final int listLength;
   Color _shadeColor = Colors.transparent;
 
   @override
@@ -272,9 +273,18 @@ class ListItem extends StatelessWidget {
       }
     }
 
+    EdgeInsets outerPadding;
+    if (index == 0){
+      outerPadding = const EdgeInsets.fromLTRB(8.0,8.0,4.0,0.0);
+    } else if (index == listLength - 1){
+      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,88.0);
+    } else {
+      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0)
+    }
+
 
     return new Padding(
-      padding: new EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0), //Padding for the Material itself
+      padding: outerPadding, //Padding for the Material itself
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
       child: new Material(
         elevation: 0.0,
