@@ -281,7 +281,7 @@ class ListItem extends StatelessWidget {
     if (index == 0){
       outerPadding = const EdgeInsets.fromLTRB(8.0,8.0,4.0,0.0);
     } else if (index == listLength - 1){
-      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,88.0);
+      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,72.0);
     } else {
       outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0);
     }
