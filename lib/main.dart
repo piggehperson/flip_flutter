@@ -47,6 +47,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int index = 0;
+  double appbarElevation = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title, style: Theme.of(context).textTheme.title,),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: appbarElevation,
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
             Navigator.of(context).pushNamed('/settings');
@@ -77,7 +78,21 @@ class _MyHomePageState extends State<MyHomePage> {
             new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin'), backgroundColor: Colors.blue, ),
             new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List'), backgroundColor: Colors.green, ),
             new BottomNavigationBarItem(icon: new Icon(Icons.assistant), title: new Text('Custom dice'), backgroundColor: Colors.deepPurple, ),
-          ], currentIndex: index, onTap: (int index) { setState((){ this.index = index; }); },
+          ], currentIndex: index, onTap: (int index) {
+            switch(index){
+              case 2:
+                setState(() {
+                  this.index = index;
+                  this.appbarElevation = 4.0;
+                });
+                break;
+              default:
+                setState(() {
+                  this.index = index;
+                  this.appbarElevation = 0.0;
+                });
+            }
+            },
       ),
       body: new Stack(
         children: <Widget>[
@@ -231,24 +246,20 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Column(mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Divider(height: 1.0,), //Adds a thin divider line below the App Bar
-          new Expanded(child:
-          new Scrollbar(child:
-          new ListView.builder(
-            itemCount: fakeListLength,
-            itemBuilder: (BuildContext context, int index) {
-              return new ListItem(
-                  index: index,
-                  listLength: fakeListLength,
-                  widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color))
-              );
+      body: new Scrollbar(child:
+      new ListView.builder(
+        itemCount: fakeListLength,
+        itemBuilder: (BuildContext context, int index) {
+          return new ListItem(
+            index: index,
+            listLength: fakeListLength,
+            widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
+            buttonCallback: (){
+              Scaffold.of(context).showSnackBar(const SnackBar(content: const Text('Delete button clicked')));
             },
-          )
-          )
-          )
-        ],
+          );
+        },
+      )
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new FloatingActionButton.extended(
@@ -261,19 +272,19 @@ class _ListPageState extends State<ListPage> {
 }
 
 class ListItem extends StatelessWidget {
-  ListItem({this.widget, this.shaded, this.index, this.listLength});
+  ListItem({this.widget, this.shadeColor, this.index, this.listLength, this.buttonCallback});
 
-  final bool shaded;
   Widget widget;
   final int index;
   final int listLength;
-  Color _shadeColor = Colors.transparent;
+  Color shadeColor = Colors.transparent;
+  final VoidCallback buttonCallback;
 
   @override
   Widget build(BuildContext context){
-    if (shaded == null && index != null){
+    if (index != null){
       if (!index.isEven){
-        _shadeColor = Colors.grey.shade200;
+        shadeColor = Colors.grey.shade200;
       }
     }
 
@@ -281,7 +292,7 @@ class ListItem extends StatelessWidget {
     if (index == 0){
       outerPadding = const EdgeInsets.fromLTRB(8.0,8.0,4.0,0.0);
     } else if (index == listLength - 1){
-      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,88.0);
+      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,80.0);
     } else {
       outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0);
     }
@@ -292,7 +303,7 @@ class ListItem extends StatelessWidget {
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
       child: new Material(
         elevation: 0.0,
-        color: _shadeColor,
+        color: shadeColor,
         borderRadius: new BorderRadius.all(const Radius.circular(8.0)),
         child: new Padding(
             padding: new EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
@@ -306,7 +317,7 @@ class ListItem extends StatelessWidget {
               new IconButton(
                   icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
                   tooltip: 'Remove item',
-                  onPressed: (){}
+                  onPressed: (){buttonCallback();}
               )
             ],
           ),
@@ -314,6 +325,55 @@ class ListItem extends StatelessWidget {
       )
     );
   }
+
+  /*Widget buildListItem(int index, BuildContext context){
+    EdgeInsets outerPadding;
+    if (index == 0){
+      outerPadding = const EdgeInsets.fromLTRB(8.0,8.0,4.0,0.0);
+    } else {
+      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0);
+    }
+
+    return new Padding(
+        padding: outerPadding, //Padding for the Material itself
+        /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
+        child: new Material(
+            elevation: 0.0,
+            color: _shadeColor,
+            borderRadius: new BorderRadius.all(const Radius.circular(8.0)),
+            child: new Padding(
+              padding: new EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  new Expanded(
+                    child: widget,
+                  ),
+                  new IconButton(
+                      icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
+                      tooltip: 'Remove item',
+                      onPressed: (){}
+                  )
+                ],
+              ),
+            )
+        )
+    );
+  }
+  Widget buildEndItem(BuildContext context){
+    return new Padding(
+        padding: const EdgeInsets.fromLTRB(16.0,0.0,16.0,88.0),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Icon(Icons.add),
+            const SizedBox(width: 8.0),
+            new Text('Add an item', style: new TextStyle(color: Colors.amber.shade700))
+          ],
+        ),
+    );
+  }*/
 }
 
 //here's the Settings page from the gear on the toolbar
