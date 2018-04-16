@@ -67,17 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
             Navigator.of(context).pushNamed('/settings');
-          })
+          }),
         ],
       ),
       bottomNavigationBar: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-
           items: <BottomNavigationBarItem>[
-            new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice'), backgroundColor: Colors.red, ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin'), backgroundColor: Colors.blue, ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List'), backgroundColor: Colors.green, ),
-            new BottomNavigationBarItem(icon: new Icon(Icons.assistant), title: new Text('Custom dice'), backgroundColor: Colors.deepPurple, ),
+            new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice')),
+            new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin')),
+            new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List')),
+            new BottomNavigationBarItem(icon: new Icon(Icons.assistant), title: new Text('Custom dice')),
           ], currentIndex: index, onTap: (int index) {
             switch(index){
               case 2:
@@ -242,104 +241,105 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
 
   int fakeListLength = 100;
+  List<String> itemsList;
+
+  @override
+  void initState() {
+    super.initState();
+    initList();
+  }
+
+  void initList(){
+    itemsList = [
+      "Mapped item 1",
+      "Madded Item 2",
+      "This is the third mapped item",
+      "Long long long long long long long long long item",
+      "Here's another item",
+      "Item roku da yo",
+      "test item 7",
+      "test item 8",
+      "test item 9",
+      "test item 10",
+      "test item 11",
+      "test item 12",
+      "test item 13",
+      "test item 14",
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (itemsList == null){
+      initList();
+    }
+
     return new Scaffold(
-      body: new Scrollbar(child:
-      new ListView.builder(
-        itemCount: fakeListLength,
-        itemBuilder: (BuildContext context, int index) {
-          return new ListItem(
-            index: index,
-            listLength: fakeListLength,
-            widget: new Text('Dummy text $index', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
-            buttonCallback: (){
-              Scaffold.of(context).showSnackBar(const SnackBar(content: const Text('Delete button clicked')));
-            },
-          );
-        },
-      )
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new FloatingActionButton.extended(
         onPressed: (){},
         icon: const Icon(Icons.casino,),
-        label: new Text('PICK'),
+        label: const Text('PICK'),
+      ),
+      body: new Scrollbar(child:
+      new ListView.builder(
+        padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
+        itemCount: itemsList.length,
+        itemBuilder: (context, index){
+          return new ListItem(
+            label: itemsList[index],
+            index: index,
+            onRemove: (){
+
+              setState((){ itemsList.removeAt(index); });
+            },
+          );
+      },
+        /*children:
+          itemsList.map((title) => new ListItem(
+            label: title,
+            onRemove: (){
+              itemsList.remove(this);
+            },
+          )).toList(),*/
+      )
       ),
     );
   }
 }
 
-class ListItem extends StatelessWidget {
-  ListItem({this.widget, this.shadeColor, this.index, this.listLength, this.buttonCallback});
+class ListItem extends StatefulWidget {
+  ListItem({this.label, this.shadeColor, this.index, this.listLength, this.onRemove})
+      : assert(label != null),
+  assert(index != null);
 
-  Widget widget;
+  String label;
   final int index;
   final int listLength;
   Color shadeColor = Colors.transparent;
-  final VoidCallback buttonCallback;
+  final VoidCallback onRemove;
+
+  @override
+  _ListItemState createState() => new _ListItemState();
+}
+
+class _ListItemState extends State<ListItem> {
 
   @override
   Widget build(BuildContext context){
-    if (index != null){
-      if (!index.isEven){
-        shadeColor = Colors.grey.shade200;
-      }
+    if (!widget.index.isEven){
+      widget.shadeColor = Colors.grey.shade200;
     }
 
-    EdgeInsets outerPadding;
-    if (index == 0){
-      outerPadding = const EdgeInsets.fromLTRB(8.0,8.0,4.0,0.0);
-    } else if (index == listLength - 1){
-      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,80.0);
-    } else {
-      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0);
-    }
+    EdgeInsets outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,8.0,0.0);
 
-
-    return new Padding(
-      padding: outerPadding, //Padding for the Material itself
-        /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
-      child: new Material(
-        elevation: 0.0,
-        color: shadeColor,
-        borderRadius: new BorderRadius.all(const Radius.circular(8.0)),
-        child: new Padding(
-            padding: new EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Expanded(
-                child: widget,
-              ),
-              new IconButton(
-                  icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
-                  tooltip: 'Remove item',
-                  onPressed: (){buttonCallback();}
-              )
-            ],
-          ),
-        )
-      )
-    );
-  }
-
-  /*Widget buildListItem(int index, BuildContext context){
-    EdgeInsets outerPadding;
-    if (index == 0){
-      outerPadding = const EdgeInsets.fromLTRB(8.0,8.0,4.0,0.0);
-    } else {
-      outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,4.0,0.0);
-    }
 
     return new Padding(
         padding: outerPadding, //Padding for the Material itself
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
         child: new Material(
             elevation: 0.0,
-            color: _shadeColor,
+            color: widget.shadeColor,
             borderRadius: new BorderRadius.all(const Radius.circular(8.0)),
             child: new Padding(
               padding: new EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
@@ -348,12 +348,12 @@ class ListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   new Expanded(
-                    child: widget,
+                    child: new Text(widget.label, style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
                   ),
                   new IconButton(
                       icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
                       tooltip: 'Remove item',
-                      onPressed: (){}
+                      onPressed: (){widget.onRemove();}
                   )
                 ],
               ),
@@ -361,19 +361,6 @@ class ListItem extends StatelessWidget {
         )
     );
   }
-  Widget buildEndItem(BuildContext context){
-    return new Padding(
-        padding: const EdgeInsets.fromLTRB(16.0,0.0,16.0,88.0),
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Icon(Icons.add),
-            const SizedBox(width: 8.0),
-            new Text('Add an item', style: new TextStyle(color: Colors.amber.shade700))
-          ],
-        ),
-    );
-  }*/
 }
 
 //here's the Settings page from the gear on the toolbar
