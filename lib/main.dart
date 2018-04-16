@@ -254,7 +254,7 @@ class _ListPageState extends State<ListPage> {
       "Mapped item 1",
       "Madded Item 2",
       "This is the third mapped item",
-      "Long long long long long long long long long item",
+      "Long long long long long long long long long looooooooooooooong item you will not even believe how long this item is but it has to be this long because i want it to wrap several lines of text like at least three lines would be nice",
       "Here's another item",
       "Item roku da yo",
       "test item 7",
