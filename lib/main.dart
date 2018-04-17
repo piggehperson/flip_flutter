@@ -150,6 +150,7 @@ class _DicePageState extends State<DicePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text('You rolled a', style: Theme.of(context).textTheme.headline.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                const SizedBox(height:8.0),
                 new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
               ]
           ),
@@ -196,6 +197,7 @@ class _CoinPageState extends State<CoinPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text('You flipped', style: Theme.of(context).textTheme.headline.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                const SizedBox(height:8.0),
                 new Text(coinString, style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
               ]
           ),
@@ -254,7 +256,7 @@ class _ListPageState extends State<ListPage> {
       "Mapped item 1",
       "Madded Item 2",
       "This is the third mapped item",
-      "Long long long long long long long long long looooooooooooooong item you will not even believe how long this item is but it has to be this long because i want it to wrap several lines of text like at least three lines would be niceWi",
+      "Long long long long long long long long long looooooooooooooong item you will not even believe how long this item is but it has to be this long because i want it to wrap several lines of text like at least three lines would be nice",
       "Here's another item",
       "Item roku da",
       "test item 7",
