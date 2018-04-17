@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: index != 3,
             child: new TickerMode(
               enabled: index == 3,
-              child: new Placeholder(color: Colors.green),
+              child: new SettingsPage(),
             ),
           ),
         ],
@@ -254,9 +254,9 @@ class _ListPageState extends State<ListPage> {
       "Mapped item 1",
       "Madded Item 2",
       "This is the third mapped item",
-      "Long long long long long long long long long looooooooooooooong item you will not even believe how long this item is but it has to be this long because i want it to wrap several lines of text like at least three lines would be nice",
+      "Long long long long long long long long long looooooooooooooong item you will not even believe how long this item is but it has to be this long because i want it to wrap several lines of text like at least three lines would be niceWi",
       "Here's another item",
-      "Item roku da yo",
+      "Item roku da",
       "test item 7",
       "test item 8",
       "test item 9",
@@ -277,7 +277,21 @@ class _ListPageState extends State<ListPage> {
     return new Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new FloatingActionButton.extended(
-        onPressed: (){},
+        onPressed: (){
+          showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
+            return new AlertDialog(
+              title: const Text('Item selected from the list'),
+              content: new Text(itemsList[new Random().nextInt(itemsList.length - 1)]),
+              actions: <Widget>[
+                new FlatButton(
+                    onPressed: (){ Navigator.of(context).pop(); },
+                    child: const Text("OK"),
+                )
+              ],
+            );
+          }
+          );
+        },
         icon: const Icon(Icons.casino,),
         label: const Text('PICK'),
       ),
@@ -331,18 +345,15 @@ class _ListItemState extends State<ListItem> {
       widget.shadeColor = Colors.grey.shade200;
     }
 
-    EdgeInsets outerPadding = const EdgeInsets.fromLTRB(8.0,0.0,8.0,0.0);
-
-
     return new Padding(
-        padding: outerPadding, //Padding for the Material itself
+        padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for the Material itself
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
         child: new Material(
             elevation: 0.0,
             color: widget.shadeColor,
-            borderRadius: new BorderRadius.all(const Radius.circular(8.0)),
+            borderRadius: const BorderRadius.all(const Radius.circular(8.0)),
             child: new Padding(
-              padding: new EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
+              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -373,41 +384,73 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool useDarkTheme = false;
+  Widget trailing = const CircularProgressIndicator();
+
+  initPrefs() async{
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs.getBool("use_dark_theme") == null
+        ? useDarkTheme = false
+        : useDarkTheme = sharedPrefs.getBool("use_dark_theme");
+    //useDarkTheme = sharedPrefs.getBool("use_dark_theme");
+    setState((){
+      trailing = new Switch(
+          value: useDarkTheme,
+          onChanged: (bool value){
+            switchTheme(value);
+            setState((){useDarkTheme = value;});
+          }
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    initPrefs();
     return new Scaffold(
-      body: new ListView(
-        children: <Widget>[
-          new AppBar(
-            leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,), onPressed: (){Navigator.of(context).pop(false);}),
-            title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
-            elevation: 0.0,
-            backgroundColor: Colors.transparent,
-          ),
-          new Padding(
-            padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: new Row(
-              children: <Widget>[
-                new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
-                new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0)),
-                new Expanded(
-                  child: new Text('Dark theme',
-                    style: Theme.of(context).textTheme.subhead),
-                ),
-                new Switch(
-                    value: useDarkTheme,
-                    onChanged: (bool value){
-                      switchTheme(value);
-                      setState((){useDarkTheme = value;});
-                    }
-                )
-              ],
+        body: new ListView(
+          children: <Widget>[
+            new AppBar(
+              leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,), onPressed: (){Navigator.of(context).pop(false);}),
+              title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
+              elevation: 0.0,
+              backgroundColor: Colors.transparent,
             ),
-          )
-        ],
-      )
+            new Padding(
+              padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: new Row(
+                children: <Widget>[
+                  new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
+                  new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0)),
+                  new Expanded(
+                    child: new Text('Dark theme',
+                        style: Theme.of(context).textTheme.subhead),
+                  ),
+                  trailing,
+                ],
+              ),
+            )
+          ],
+        )
     );
+    /*new FutureBuilder<SharedPreferences>(
+      future: SharedPreferences.getInstance(),
+      builder:
+          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return new Center(child: new Text("something went wrong!!"),);
+          default:
+            if (!snapshot.hasError) {
+              return snapshot.data.getBool("use_dark_theme") != null
+                  ? new MainView()
+                  : new LoadingScreen();
+            } else {
+              return new Center(child: new Text("something went wrong: $snapshot.error"),);
+            }
+      }
+      },
+    );*/
   }
 
   void switchTheme(bool isDark){
