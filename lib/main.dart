@@ -158,7 +158,7 @@ class _DicePageState extends State<DicePage> {
         floatingActionButton: new FloatingActionButton.extended(
           onPressed: _onPressed,
           icon: const Icon(Icons.casino,),
-          label: new Text('ROLL'),
+          label: const Text('ROLL'),
         ),
     );
   }
@@ -205,7 +205,7 @@ class _CoinPageState extends State<CoinPage> {
       floatingActionButton: new FloatingActionButton.extended(
         onPressed: _onPressed,
         icon: const Icon(Icons.casino,),
-        label: new Text('FLIP'),
+        label: const Text('FLIP'),
       ),
     );
   }
@@ -412,17 +412,17 @@ class _SettingsPageState extends State<SettingsPage> {
         body: new ListView(
           children: <Widget>[
             new AppBar(
-              leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,), onPressed: (){Navigator.of(context).pop(false);}),
+              leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,), onPressed: (){Navigator.of(context).pop();}, tooltip: "Back"),
               title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
               elevation: 0.0,
               backgroundColor: Colors.transparent,
             ),
             new Padding(
-              padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: new Row(
                 children: <Widget>[
                   new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
-                  new Padding(padding: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0)),
+                  const SizedBox(width: 32.0),
                   new Expanded(
                     child: new Text('Dark theme',
                         style: Theme.of(context).textTheme.subhead),
