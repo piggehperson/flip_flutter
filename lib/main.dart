@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
           items: <BottomNavigationBarItem>[
             new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice')),
             new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin')),
-            new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('List')),
+            new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('Thing picker')),
             new BottomNavigationBarItem(icon: new Icon(Icons.assistant), title: new Text('Custom dice')),
           ], currentIndex: index, onTap: (int index) {
             switch(index){
@@ -279,20 +279,28 @@ class _ListPageState extends State<ListPage> {
     return new Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new FloatingActionButton.extended(
+
         onPressed: (){
-          showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
-            return new AlertDialog(
-              title: const Text('Item selected from the list'),
-              content: new Text(itemsList[new Random().nextInt(itemsList.length - 1)]),
-              actions: <Widget>[
-                new FlatButton(
-                    onPressed: (){ Navigator.of(context).pop(); },
+          if (itemsList.length > 0){
+            showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
+              return new AlertDialog(
+                title: const Text('Item selected from the list'),
+                content: new Text(
+                    itemsList[new Random().nextInt(itemsList.length)]),
+                actions: <
+                    Widget>[ //AlertDialog with no buttons makes me nut but that's bad ux so i gotta abstain
+                  new FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: const Text("OK"),
-                )
-              ],
+                  ),
+                ],
+              );}
             );
+          } else {
+            Scaffold.of(context).showSnackBar(const SnackBar(content: const Text("There's nothing to pick from!")));
           }
-          );
         },
         icon: const Icon(Icons.casino,),
         label: const Text('PICK'),
@@ -365,7 +373,7 @@ class _ListItemState extends State<ListItem> {
                   ),
                   new IconButton(
                       icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
-                      tooltip: 'Remove item',
+                      tooltip: 'Remove this Thing',
                       onPressed: (){widget.onRemove();}
                   )
                 ],
@@ -424,7 +432,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
                   const SizedBox(width: 32.0),
                   new Expanded(
-                    child: new Text('Dark theme',
+                    child: new Text('Dark theme (WIP)',
                         style: Theme.of(context).textTheme.subhead),
                   ),
                   trailing,
