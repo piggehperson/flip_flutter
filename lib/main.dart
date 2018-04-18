@@ -73,10 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
-            new BottomNavigationBarItem(icon: new Icon(Icons.casino), title: new Text('Dice')),
-            new BottomNavigationBarItem(icon: new Icon(Icons.account_circle), title: new Text('Coin')),
-            new BottomNavigationBarItem(icon: new Icon(Icons.format_list_bulleted), title: new Text('Thing picker')),
-            new BottomNavigationBarItem(icon: new Icon(Icons.assistant), title: new Text('Custom dice')),
+            const BottomNavigationBarItem(icon: const Icon(Icons.casino), title: const Text('Dice')),
+            const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
+            const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
+            const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
           ], currentIndex: index, onTap: (int index) {
             switch(index){
               case 2:
@@ -267,13 +267,51 @@ class _ListPageState extends State<ListPage> {
       "test item 12",
       "test item 13",
       "test item 14",
+      "if you see this item, something went wrong"
     ];
   }
 
-  void addNewItem(){
-    setState((){
+  void dialogNewItem(BuildContext context){
+    String text = "Blank Thing";
+    TextField textField = new TextField(
+      decoration: const InputDecoration(
+        hintText: "Name your Thing",
+      ),
+      onChanged: (String value){
+        text = value;
+      },
+    );
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return new AlertDialog(
+          title: const Text("Add a Thing"),
+          content: textField,
+          actions: <Widget>[
+            new FlatButton(
+              child: const Text("CANCEL"),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: const Text("ADD"),
+              onPressed: (){
+                setState((){
+                  itemsList.insert(itemsList.length - 1, text);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    /*setState((){
       itemsList.add("This item was generated an addNewItem() call");
-    });
+    });*/
   }
 
   @override
@@ -283,39 +321,33 @@ class _ListPageState extends State<ListPage> {
     }
 
     return new Stack(children: <Widget>[
-      new Offstage(
-        offstage: itemsList.length != 0,
+      new Offstage( //Show this if there are no items in the list
+        offstage: itemsList.length > 1,
         child: new TickerMode(
-          enabled: itemsList.length == 0,
+          enabled: itemsList.length == 1,
           child: new Align(
-            alignment: new FractionalOffset(0.5,0.25),
+            alignment: new FractionalOffset(0.5,0.40),
             child: new Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Text("There's nothing here", style: Theme.of(context).textTheme.headline.copyWith(fontFamily: 'ProductSans')),
-                  const SizedBox(height:8.0),
-                  new Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      new Text('Try adding a Thing with', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
-                      new IconButton(
-                          icon: new Icon(Icons.add_circle_outline, color: Theme.of(context).primaryColor),
-                          onPressed: (){
-                            addNewItem();
-                          }
-                      ),
-                    ],
+                  new Text("There's nothing here", style: Theme.of(context).textTheme.headline.copyWith(fontFamily: 'ProductSans', color: Theme.of(context).textTheme.display1.color)),
+                  const SizedBox(height:16.0),
+                  new RaisedButton.icon(
+                    onPressed: (){ dialogNewItem(context); },
+                    icon: const Icon(Icons.add),
+                    label: const Text("ADD A THING"),
+                    color: Theme.of(context).accentColor,
                   )
                 ]
             ),
           ),
         ),
       ),
-      new Offstage(
-        offstage: itemsList.length == 0,
+      new Offstage( //show this if there are items in the list
+        offstage: itemsList.length == 1,
         child: new TickerMode(
-          enabled: itemsList.length != 0,
+          enabled: itemsList.length > 1,
           child: new Scaffold(
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             floatingActionButton: new FloatingActionButton.extended(
@@ -353,9 +385,12 @@ class _ListPageState extends State<ListPage> {
                   label: itemsList[index],
                   index: index,
                   listLength: itemsList.length,
-                  onRemove: (){
-
+                  actionCallback: index != itemsList.length - 1
+                    ? (){ //this is a regular list item
                     setState((){ itemsList.removeAt(index); });
+                  }
+                  : (){ //this is the end item, prompt to add an item
+                    dialogNewItem(context);
                   },
                 );
               },
@@ -369,14 +404,14 @@ class _ListPageState extends State<ListPage> {
 }
 
 class ListItem extends StatefulWidget {
-  ListItem({this.label, this.shadeColor, this.index, this.listLength, this.onRemove})
+  ListItem({this.label, this.shadeColor, this.index, this.listLength, this.actionCallback})
       : assert(label != null), assert(index != null);
 
   String label;
   final int index;
   final int listLength;
   Color shadeColor = Colors.transparent;
-  final VoidCallback onRemove;
+  final VoidCallback actionCallback;
 
   @override
   _ListItemState createState() => new _ListItemState();
@@ -393,7 +428,21 @@ class _ListItemState extends State<ListItem> {
     return new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for the Material itself
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
-        child: new Material(
+        child: widget.index == widget.listLength - 1
+            ? new InkWell( //This is the Add Item button, it shows at the end of the list
+          onTap: widget.actionCallback,
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(width: 8.0, height: 56.0),
+              new Icon(Icons.add, color: Theme.of(context).primaryColor,),
+              const SizedBox(width: 16.0),
+              new Text("Add a Thing", style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).primaryColor, fontFamily: "ProductSans",),),
+            ],
+          ),
+        )
+            : new Material( //This is a normal list item
             elevation: 0.0,
             color: widget.shadeColor,
             borderRadius: const BorderRadius.all(const Radius.circular(8.0)),
@@ -409,7 +458,7 @@ class _ListItemState extends State<ListItem> {
                   new IconButton(
                       icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
                       tooltip: 'Remove this Thing',
-                      onPressed: (){widget.onRemove();}
+                      onPressed: (){widget.actionCallback();}
                   )
                 ],
               ),
