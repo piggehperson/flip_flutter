@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: index != 3,
             child: new TickerMode(
               enabled: index == 3,
-              child: new SettingsPage(),
+              child: const Center(child: const Text("coming soon!! list is done so now i gotta work on this"),),
             ),
           ),
         ],
@@ -429,18 +429,11 @@ class _ListItemState extends State<ListItem> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for the Material itself
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
         child: widget.index == widget.listLength - 1
-            ? new InkWell( //This is the Add Item button, it shows at the end of the list
-          onTap: widget.actionCallback,
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(width: 8.0, height: 56.0),
-              new Icon(Icons.add, color: Theme.of(context).primaryColor,),
-              const SizedBox(width: 16.0),
-              new Text("Add a Thing", style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).primaryColor, fontFamily: "ProductSans",),),
-            ],
-          ),
+            ? new FlatButton.icon(
+          textColor: Theme.of(context).primaryColor,
+            onPressed: widget.actionCallback,
+            icon: const Icon(Icons.add),
+            label: const Text("Add a Thing"),
         )
             : new Material( //This is a normal list item
             elevation: 0.0,
