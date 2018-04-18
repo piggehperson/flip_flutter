@@ -270,6 +270,12 @@ class _ListPageState extends State<ListPage> {
     ];
   }
 
+  void addNewItem(){
+    setState((){
+      itemsList.add("This item was generated an addNewItem() call");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (itemsList == null){
@@ -293,8 +299,12 @@ class _ListPageState extends State<ListPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       new Text('Try adding a Thing with', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
-                      const SizedBox(width: 4.0),
-                      new Icon(Icons.add_circle_outline, color: Theme.of(context).textTheme.display1.color),
+                      new IconButton(
+                          icon: new Icon(Icons.add_circle_outline, color: Theme.of(context).primaryColor),
+                          onPressed: (){
+                            addNewItem();
+                          }
+                      ),
                     ],
                   )
                 ]
@@ -309,7 +319,6 @@ class _ListPageState extends State<ListPage> {
           child: new Scaffold(
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             floatingActionButton: new FloatingActionButton.extended(
-
               onPressed: (){
                 if (itemsList.length > 0){
                   showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
@@ -356,7 +365,6 @@ class _ListPageState extends State<ListPage> {
         ),
       ),
     ],);
-
   }
 }
 
