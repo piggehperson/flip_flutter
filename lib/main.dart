@@ -357,7 +357,7 @@ class _ListPageState extends State<ListPage> {
                     return new AlertDialog(
                       title: const Text('Item selected from the list'),
                       content: new Text(
-                          itemsList[new Random().nextInt(itemsList.length)]),
+                          itemsList[new Random().nextInt(itemsList.length - 1)]),
                       actions: <
                           Widget>[ //AlertDialog with no buttons makes me nut but that's bad ux so i gotta abstain
                         new FlatButton(
