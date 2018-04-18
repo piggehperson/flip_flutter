@@ -276,66 +276,93 @@ class _ListPageState extends State<ListPage> {
       initList();
     }
 
-    return new Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: new FloatingActionButton.extended(
-
-        onPressed: (){
-          if (itemsList.length > 0){
-            showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
-              return new AlertDialog(
-                title: const Text('Item selected from the list'),
-                content: new Text(
-                    itemsList[new Random().nextInt(itemsList.length)]),
-                actions: <
-                    Widget>[ //AlertDialog with no buttons makes me nut but that's bad ux so i gotta abstain
-                  new FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("OK"),
-                  ),
-                ],
-              );}
-            );
-          } else {
-            Scaffold.of(context).showSnackBar(const SnackBar(content: const Text("There's nothing to pick from!")));
-          }
-        },
-        icon: const Icon(Icons.casino,),
-        label: const Text('PICK'),
+    return new Stack(children: <Widget>[
+      new Offstage(
+        offstage: itemsList.length != 0,
+        child: new TickerMode(
+          enabled: itemsList.length == 0,
+          child: new Align(
+            alignment: new FractionalOffset(0.5,0.25),
+            child: new Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Text("There's nothing here", style: Theme.of(context).textTheme.headline.copyWith(fontFamily: 'ProductSans')),
+                  const SizedBox(height:8.0),
+                  new Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      new Text('Try adding a Thing with', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
+                      const SizedBox(width: 4.0),
+                      new Icon(Icons.add_circle_outline, color: Theme.of(context).textTheme.display1.color),
+                    ],
+                  )
+                ]
+            ),
+          ),
+        ),
       ),
-      body: new Scrollbar(child:
-      new ListView.builder(
-        padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
-        itemCount: itemsList.length,
-        itemBuilder: (context, index){
-          return new ListItem(
-            label: itemsList[index],
-            index: index,
-            onRemove: (){
+      new Offstage(
+        offstage: itemsList.length == 0,
+        child: new TickerMode(
+          enabled: itemsList.length != 0,
+          child: new Scaffold(
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: new FloatingActionButton.extended(
 
-              setState((){ itemsList.removeAt(index); });
-            },
-          );
-      },
-        /*children:
-          itemsList.map((title) => new ListItem(
-            label: title,
-            onRemove: (){
-              itemsList.remove(this);
-            },
-          )).toList(),*/
-      )
+              onPressed: (){
+                if (itemsList.length > 0){
+                  showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
+                    return new AlertDialog(
+                      title: const Text('Item selected from the list'),
+                      content: new Text(
+                          itemsList[new Random().nextInt(itemsList.length)]),
+                      actions: <
+                          Widget>[ //AlertDialog with no buttons makes me nut but that's bad ux so i gotta abstain
+                        new FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("OK"),
+                        ),
+                      ],
+                    );}
+                  );
+                } else {
+                  Scaffold.of(context).showSnackBar(const SnackBar(content: const Text("There's nothing to pick from!")));
+                }
+              },
+              icon: const Icon(Icons.casino,),
+              label: const Text('PICK'),
+            ),
+            body: new Scrollbar(child:
+            new ListView.builder(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
+              itemCount: itemsList.length,
+              itemBuilder: (context, index){
+                return new ListItem(
+                  label: itemsList[index],
+                  index: index,
+                  listLength: itemsList.length,
+                  onRemove: (){
+
+                    setState((){ itemsList.removeAt(index); });
+                  },
+                );
+              },
+            )
+            ),
+          ),
+        ),
       ),
-    );
+    ],);
+
   }
 }
 
 class ListItem extends StatefulWidget {
   ListItem({this.label, this.shadeColor, this.index, this.listLength, this.onRemove})
-      : assert(label != null),
-  assert(index != null);
+      : assert(label != null), assert(index != null);
 
   String label;
   final int index;
