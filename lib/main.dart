@@ -381,9 +381,14 @@ class _ListPageState extends State<ListPage> {
               padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
               itemCount: itemsList.length,
               itemBuilder: (context, index){
+                Color shadeColor;
+                if (!index.isEven){
+                  shadeColor = Colors.grey.shade200;
+                }
                 return new ListItem(
                   label: itemsList[index],
                   index: index,
+                  shadeColor: shadeColor,
                   listLength: itemsList.length,
                   actionCallback: index != itemsList.length - 1
                     ? (){ //this is a regular list item
@@ -410,7 +415,7 @@ class ListItem extends StatefulWidget {
   String label;
   final int index;
   final int listLength;
-  Color shadeColor = Colors.transparent;
+  final Color shadeColor;
   final VoidCallback actionCallback;
 
   @override
@@ -421,10 +426,6 @@ class _ListItemState extends State<ListItem> {
 
   @override
   Widget build(BuildContext context){
-    if (!widget.index.isEven){
-      widget.shadeColor = Colors.grey.shade200;
-    }
-
     return new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for the Material itself
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
