@@ -429,11 +429,14 @@ class _ListItemState extends State<ListItem> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for the Material itself
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
         child: widget.index == widget.listLength - 1
-            ? new FlatButton.icon(
-          textColor: Theme.of(context).primaryColor,
+            ? new Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: new FlatButton.icon(
+            textColor: Theme.of(context).primaryColor,
             onPressed: widget.actionCallback,
             icon: const Icon(Icons.add),
             label: const Text("Add a Thing"),
+          )
         )
             : new Material( //This is a normal list item
             elevation: 0.0,
@@ -460,6 +463,8 @@ class _ListItemState extends State<ListItem> {
     );
   }
 }
+
+
 
 //here's the Settings page from the gear on the toolbar
 class SettingsPage extends StatefulWidget {
