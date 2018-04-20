@@ -331,7 +331,7 @@ class _ListPageState extends State<ListPage> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Text("There's nothing here", style: Theme.of(context).textTheme.headline.copyWith(fontFamily: 'ProductSans', color: Theme.of(context).textTheme.display1.color)),
+                  new Text("There's nothing here", style: Theme.of(context).textTheme.headline.copyWith(fontSize: 20.0, color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
                   const SizedBox(height:16.0),
                   new RaisedButton.icon(
                     onPressed: (){ dialogNewItem(context); },
@@ -433,10 +433,10 @@ class _ListItemState extends State<ListItem> {
             ? new Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: new FlatButton.icon(
-            textColor: Theme.of(context).primaryColor,
             onPressed: widget.actionCallback,
             icon: const Icon(Icons.add),
             label: const Text("Add a Thing"),
+            textTheme: ButtonTextTheme.primary,
           )
         )
             : new Material( //This is a normal list item
