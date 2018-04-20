@@ -432,11 +432,11 @@ class _ListItemState extends State<ListItem> {
         child: widget.index == widget.listLength - 1
             ? new Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: new FlatButton.icon(
+          child: new OutlineButton.icon(
             onPressed: widget.actionCallback,
             icon: const Icon(Icons.add),
             label: const Text("Add a Thing"),
-            textTheme: ButtonTextTheme.primary,
+            textColor: Theme.of(context).primaryColor,
           )
         )
             : new Material( //This is a normal list item
