@@ -253,21 +253,10 @@ class _ListPageState extends State<ListPage> {
 
   void initList(){
     itemsList = [
-      "Mapped item 1",
-      "Madded Item 2",
-      "This is the third mapped item",
-      "Long long long long long long long long long looooooooooooooong item you will not even believe how long this item is but it has to be this long because i want it to wrap several lines of text like at least three lines would be nice",
-      "Here's another item",
-      "Item roku da",
-      "test item 7",
-      "test item 8",
-      "test item 9",
-      "test item 10",
-      "test item 11",
-      "test item 12",
-      "test item 13",
-      "test item 14",
-      "if you see this item, something went wrong"
+      "NewThing",
+      "MyThing",
+      "HelloThing",
+      "if you see this text, something went wrong"
     ];
   }
 
@@ -437,6 +426,7 @@ class _ListItemState extends State<ListItem> {
             icon: const Icon(Icons.add),
             label: const Text("Add a Thing"),
             textColor: Theme.of(context).primaryColor,
+            highlightElevation: 0.0,
           )
         )
             : new Material( //This is a normal list item
