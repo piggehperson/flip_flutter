@@ -498,20 +498,11 @@ class _SettingsPageState extends State<SettingsPage> {
               elevation: 0.0,
               backgroundColor: Colors.transparent,
             ),
-            new Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: new Row(
-                children: <Widget>[
-                  new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
-                  const SizedBox(width: 32.0),
-                  new Expanded(
-                    child: new Text('Dark theme (WIP)',
-                        style: Theme.of(context).textTheme.subhead),
-                  ),
-                  trailing,
-                ],
-              ),
-            )
+            new ListTile(
+              leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
+              title: new Text('Dark theme (WIP)', /*style: Theme.of(context).textTheme.subhead*/),
+              trailing: trailing,
+            ),
           ],
         )
     );
