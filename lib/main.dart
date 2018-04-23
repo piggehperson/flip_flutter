@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             offstage: index != 3,
             child: new TickerMode(
               enabled: index == 3,
-              child: const Center(child: const Text("coming soon!! list is done so now i gotta work on this"),),
+              child: new D20Page(),
             ),
           ),
         ],
@@ -137,7 +137,7 @@ class DicePage extends StatefulWidget {
 
 class _DicePageState extends State<DicePage> {
 
-  int diceNumber = 0;
+  int diceNumber = randomize();
 
   @override
   Widget build(BuildContext context) {
@@ -149,27 +149,28 @@ class _DicePageState extends State<DicePage> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new Text('You rolled a', style: Theme.of(context).textTheme.headline.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                new Text('You rolled a', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
                 const SizedBox(height:8.0),
                 new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
               ]
           ),
         ),
         floatingActionButton: new FloatingActionButton.extended(
-          onPressed: _onPressed,
+          onPressed: onPressed,
           icon: const Icon(Icons.casino,),
           label: const Text('ROLL'),
         ),
+
     );
   }
-  int _randomize(){
+  static int randomize(){
     final random = new Random();
     return 1 + random.nextInt(6);
   }
 
-  void _onPressed(){
+  void onPressed(){
     setState((){
-      diceNumber = _randomize();
+      diceNumber = randomize();
     });
   }
 }
@@ -184,7 +185,7 @@ class CoinPage extends StatefulWidget {
 class _CoinPageState extends State<CoinPage> {
 
   int coinNumber = 0;
-  String coinString = '0';
+  String coinString = 'Nothing';
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +197,7 @@ class _CoinPageState extends State<CoinPage> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new Text('You flipped', style: Theme.of(context).textTheme.headline.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                new Text('You flipped', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
                 const SizedBox(height:8.0),
                 new Text(coinString, style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
               ]
@@ -210,7 +211,7 @@ class _CoinPageState extends State<CoinPage> {
     );
   }
 
-  int _randomize(){
+  static int _randomize(){
     final random = new Random();
     return random.nextInt(2);
   }
@@ -327,6 +328,7 @@ class _ListPageState extends State<ListPage> {
                     icon: const Icon(Icons.add),
                     label: const Text("ADD A THING"),
                     color: Theme.of(context).accentColor,
+                    shape: const StadiumBorder(),
                   )
                 ]
             ),
@@ -455,6 +457,79 @@ class _ListItemState extends State<ListItem> {
   }
 }
 
+//Custom Dice page widget
+class D20Page extends StatefulWidget {
+  const D20Page();
+
+  @override
+  D20PageState createState() => new D20PageState();
+}
+
+class D20PageState extends State<D20Page> {
+  int min = 1;
+  int max = 20;
+  int diceNumber = randomize(1, 20);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: show errors on text fields if numbers are negative
+    return new Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: new FloatingActionButton.extended(
+        icon: const Icon(Icons.casino),
+        label: const Text("ROLL"),
+        onPressed: onPressed,
+      ),
+      body: new Scrollbar(
+        child: new SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 80.0),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[new Column(
+                  children: <Widget>[
+                    new Text('You rolled', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                    new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                  ],),],),
+                const SizedBox(height: 32.0),
+                new Text('From', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                new TextField(
+                  decoration: new InputDecoration(hintText: "Small number"),
+                  keyboardType: TextInputType.number,
+                  controller: new TextEditingController(text: min.toString()),
+                  onChanged: (String value){
+                    min = int.parse(value); },
+                ),
+                const SizedBox(height: 8.0),
+                new Text('to', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                new TextField(
+                  decoration: new InputDecoration(hintText: "Big number"),
+                  keyboardType: TextInputType.number,
+                  controller: new TextEditingController(text: max.toString()),
+                  onChanged: (String value){
+                    max = int.parse(value);
+                  },
+                ),
+              ],
+            ),
+        ),
+      ),
+    );
+  }
+
+  static int randomize(int min, int max){
+    final random = new Random();
+    assert(!min.isNegative);
+    assert(max > min);
+    return min + random.nextInt(max);
+  }
+
+  void onPressed(){
+    setState(() {
+      diceNumber = randomize(min, max);
+    });
+  }
+}
 
 
 //here's the Settings page from the gear on the toolbar
