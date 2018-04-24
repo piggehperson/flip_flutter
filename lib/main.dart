@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -542,6 +543,7 @@ class D20PageState extends State<D20Page> {
                       keyboardType: TextInputType.number,
                       //controller: new TextEditingController(text: min.toString()),
                       validator: validateMin,
+                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                       initialValue: min.toString(),
                     ),
                     const SizedBox(height: 8.0),
@@ -551,6 +553,7 @@ class D20PageState extends State<D20Page> {
                       keyboardType: TextInputType.number,
                       //controller: new TextEditingController(text: max.toString()),
                       validator: validateMax,
+                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                       initialValue: max.toString(),
                     ),
                   ],
