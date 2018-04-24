@@ -569,7 +569,7 @@ class D20PageState extends State<D20Page> {
 
   static int randomize(int min, int max){
     final random = new Random();
-    return max > min ? min + random.nextInt(max) : min + random.nextInt(max);
+    return max > min ? max + random.nextInt(min) : min + random.nextInt(max);
   }
 
   void onPressed(){
