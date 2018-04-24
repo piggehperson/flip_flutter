@@ -478,7 +478,11 @@ class D20PageState extends State<D20Page> {
       int intValue = int.parse(value);
       if (intValue.isNegative){
         return "Number can't be negative!";
-      } else {
+      }
+      if (intValue > 4294967296){
+        return "Number must be less than 4294967296!";
+      }
+      else {
         min = intValue;
         return null;
       }
@@ -498,6 +502,9 @@ class D20PageState extends State<D20Page> {
       if (intValue <= min){
         return "Big number has to be bigger than Small number!";
       }
+      if (intValue > 4294967296){
+        return "Number must be less than 4294967296!";
+      }
       max = intValue;
       return null;
     } catch (FormatException){
@@ -507,7 +514,6 @@ class D20PageState extends State<D20Page> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: show errors on text fields if numbers are negative
     return new Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new FloatingActionButton.extended(
@@ -568,7 +574,7 @@ class D20PageState extends State<D20Page> {
         diceNumber = randomize(min, max);
       });
     } else {
-      Scaffold.of(context).showSnackBar(const SnackBar(content: const Text("Something's wrong with your numbers!")));
+      Scaffold.of(context).showSnackBar(new SnackBar(content: const Text("Something's wrong with your numbers!"), backgroundColor: Colors.red.shade800, duration: new Duration(seconds:3),));
     }
   }
 }
