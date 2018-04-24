@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -469,6 +468,42 @@ class D20PageState extends State<D20Page> {
   int min = 1;
   int max = 20;
   int diceNumber = randomize(1, 20);
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  String validateMin(String value){
+    if (value.isEmpty){
+      return "Please enter a number!";
+    }
+    try {
+      int intValue = int.parse(value);
+      if (intValue.isNegative){
+        return "Number can't be negative!";
+      } else {
+        min = intValue;
+        return null;
+      }
+    } catch (FormatException){
+      return "Number can't be negative!";
+    }
+  }
+  String validateMax(String value){
+    if (value.isEmpty){
+      return "Please enter a number!";
+    }
+    try {
+      int intValue = int.parse(value);
+      if (intValue.isNegative){
+        return "Number can't be negative!";
+      }
+      if (intValue <= min){
+        return "Big number has to be bigger than Small number!";
+      }
+      max = intValue;
+      return null;
+    } catch (FormatException){
+      return "Number can't be negative!";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -478,40 +513,43 @@ class D20PageState extends State<D20Page> {
       floatingActionButton: new FloatingActionButton.extended(
         icon: const Icon(Icons.casino),
         label: const Text("ROLL"),
-        onPressed: onPressed,
+        onPressed: (){ onPressed(); },
       ),
       body: new Scrollbar(
         child: new SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 80.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[new Column(
+            child: new Form(
+              key: _formKey,
+              autovalidate: true,
+              child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text('You rolled', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                    new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
-                  ],),],),
-                const SizedBox(height: 32.0),
-                new Text('From', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                new TextField(
-                  decoration: new InputDecoration(hintText: "Small number"),
-                  keyboardType: TextInputType.number,
-                  controller: new TextEditingController(text: min.toString()),
-                  onChanged: (String value){
-                    min = int.parse(value); },
+                    new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[new Column(
+                      children: <Widget>[
+                        new Text('You rolled', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                        new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                      ],),],),
+                    const SizedBox(height: 32.0),
+                    new Text('From', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                    new TextFormField(
+                      decoration: new InputDecoration(hintText: "Small number"),
+                      keyboardType: TextInputType.number,
+                      //controller: new TextEditingController(text: min.toString()),
+                      validator: validateMin,
+                      initialValue: min.toString(),
+                    ),
+                    const SizedBox(height: 8.0),
+                    new Text('to', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                    new TextFormField(
+                      decoration: new InputDecoration(hintText: "Big number"),
+                      keyboardType: TextInputType.number,
+                      //controller: new TextEditingController(text: max.toString()),
+                      validator: validateMax,
+                      initialValue: max.toString(),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8.0),
-                new Text('to', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                new TextField(
-                  decoration: new InputDecoration(hintText: "Big number"),
-                  keyboardType: TextInputType.number,
-                  controller: new TextEditingController(text: max.toString()),
-                  onChanged: (String value){
-                    max = int.parse(value);
-                  },
-                ),
-              ],
-            ),
+            )
         ),
       ),
     );
@@ -525,9 +563,13 @@ class D20PageState extends State<D20Page> {
   }
 
   void onPressed(){
-    setState(() {
-      diceNumber = randomize(min, max);
-    });
+    if (_formKey.currentState.validate()){
+      setState(() {
+        diceNumber = randomize(min, max);
+      });
+    } else {
+      Scaffold.of(context).showSnackBar(const SnackBar(content: const Text("Something's wrong with your numbers!")));
+    }
   }
 }
 
