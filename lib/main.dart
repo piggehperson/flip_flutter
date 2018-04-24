@@ -469,8 +469,15 @@ class D20PageState extends State<D20Page> {
   int min = 1;
   int max = 20;
   int diceNumber = randomize(1, 20);
+  /* Create a Key for the Form that controls the TextFields. We're gonna need
+     this to validate the form when the FAB is clicked. */
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  /* Create a Key for the Scaffold that holds everything. The Snackbar we show
+     if there's an error needs to be shown on this Widget's Scaffold so it can
+     move the FAB out of the way. */
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  //These functions validate the TextFields that control Min and Max variables.
   String validateMin(String value){
     if (value.isEmpty){
       return "Please enter a number!";
@@ -483,12 +490,10 @@ class D20PageState extends State<D20Page> {
       if (intValue > 4294967296){
         return "Number must be less than 4294967296!";
       }
-      else {
-        min = intValue;
-        return null;
-      }
+      min = intValue;
+      return null;
     } catch (FormatException){
-      return "Number can't be negative!";
+      return "That's not a number!";
     }
   }
   String validateMax(String value){
@@ -500,22 +505,20 @@ class D20PageState extends State<D20Page> {
       if (intValue.isNegative){
         return "Number can't be negative!";
       }
-      if (intValue <= min){
-        return "Big number has to be bigger than Small number!";
-      }
       if (intValue > 4294967296){
         return "Number must be less than 4294967296!";
       }
       max = intValue;
       return null;
     } catch (FormatException){
-      return "Number can't be negative!";
+      return "That's not a number!";
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new FloatingActionButton.extended(
         icon: const Icon(Icons.casino),
@@ -566,9 +569,7 @@ class D20PageState extends State<D20Page> {
 
   static int randomize(int min, int max){
     final random = new Random();
-    assert(!min.isNegative);
-    assert(max > min);
-    return min + random.nextInt(max);
+    return max > min ? min + random.nextInt(max) : min + random.nextInt(max);
   }
 
   void onPressed(){
@@ -577,7 +578,7 @@ class D20PageState extends State<D20Page> {
         diceNumber = randomize(min, max);
       });
     } else {
-      Scaffold.of(context).showSnackBar(new SnackBar(content: const Text("Something's wrong with your numbers!"), backgroundColor: Colors.red.shade800, duration: new Duration(seconds:3),));
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(content: const Text("Something's wrong with your numbers!"), backgroundColor: Colors.red.shade800, duration: new Duration(seconds:3),));
     }
   }
 }
