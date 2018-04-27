@@ -4,7 +4,7 @@ import 'package:flutter/animation.dart';
 class SplashWidget extends StatefulWidget {
   SplashWidget({Key key, this.size, this.child}) : assert(size != null), super(key: key);
   double size;
-  Widget child,
+  Widget child;
 
   @override
   SplashWidgetState createState() => new SplashWidgetState();
