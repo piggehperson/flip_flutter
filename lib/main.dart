@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flip_flutter/splashwidget.dart';
 
 void main() {
   runApp(new MyApp());
@@ -138,6 +139,7 @@ class DicePage extends StatefulWidget {
 class _DicePageState extends State<DicePage> {
 
   int diceNumber = randomize();
+  GlobalKey<SplashWidgetState> splashWidgetKey = new GlobalKey<SplashWidgetState>();
 
   @override
   Widget build(BuildContext context) {
@@ -145,20 +147,27 @@ class _DicePageState extends State<DicePage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: new Align(
           alignment: new FractionalOffset(0.5,0.25),
-          child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Text('You rolled a', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                const SizedBox(height:8.0),
-                new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
-              ]
+          child: new SplashWidget(
+            key: splashWidgetKey,
+            size: 150.0,
+            child: new Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  new Text('You rolled a', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                  const SizedBox(height:8.0),
+                  new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                ]
+            ),
           ),
         ),
         floatingActionButton: new FloatingActionButton.extended(
           onPressed: onPressed,
           icon: const Icon(Icons.casino,),
-          label: const Text('ROLL'),
+          label: const Text('Roll'),
+          elevation: 4.0,
+          highlightElevation: 8.0,
         ),
 
     );
@@ -169,6 +178,7 @@ class _DicePageState extends State<DicePage> {
   }
 
   void onPressed(){
+    splashWidgetKey.currentState.splash();
     setState((){
       diceNumber = randomize();
     });
@@ -186,6 +196,7 @@ class _CoinPageState extends State<CoinPage> {
 
   int coinNumber = 0;
   String coinString = 'Nothing';
+  GlobalKey<SplashWidgetState> splashWidgetKey = new GlobalKey<SplashWidgetState>();
 
   @override
   Widget build(BuildContext context) {
@@ -193,20 +204,27 @@ class _CoinPageState extends State<CoinPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: new Align(
           alignment: new FractionalOffset(0.5,0.25),
-          child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Text('You flipped', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                const SizedBox(height:8.0),
-                new Text(coinString, style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
-              ]
+          child: new SplashWidget(
+            key: splashWidgetKey,
+            size: 250.0,
+            child: new Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  new Text('You flipped', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                  const SizedBox(height:8.0),
+                  new Text(coinString, style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                ]
+            ),
           ),
         ),
       floatingActionButton: new FloatingActionButton.extended(
         onPressed: _onPressed,
         icon: const Icon(Icons.casino,),
-        label: const Text('FLIP'),
+        label: const Text('Flip'),
+        elevation: 4.0,
+        highlightElevation: 8.0,
       ),
     );
   }
@@ -280,13 +298,13 @@ class _ListPageState extends State<ListPage> {
           content: textField,
           actions: <Widget>[
             new FlatButton(
-              child: const Text("CANCEL"),
+              child: const Text("Cancel"),
               onPressed: (){
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
-              child: const Text("ADD"),
+              child: const Text("Add"),
               onPressed: (){
                 setState((){
                   itemsList.insert(itemsList.length - 1, text);
@@ -326,7 +344,7 @@ class _ListPageState extends State<ListPage> {
                   new RaisedButton.icon(
                     onPressed: (){ dialogNewItem(context); },
                     icon: const Icon(Icons.add),
-                    label: const Text("ADD A THING"),
+                    label: const Text("Add a Thing"),
                     color: Theme.of(context).accentColor,
                     shape: const StadiumBorder(),
                   )
@@ -365,7 +383,9 @@ class _ListPageState extends State<ListPage> {
                 }
               },
               icon: const Icon(Icons.casino,),
-              label: const Text('PICK'),
+              label: const Text('Pick'),
+              elevation: 4.0,
+              highlightElevation: 8.0,
             ),
             body: new Scrollbar(child:
             new ListView.builder(
@@ -522,7 +542,9 @@ class D20PageState extends State<D20Page> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new FloatingActionButton.extended(
         icon: const Icon(Icons.casino),
-        label: const Text("ROLL"),
+        label: const Text("Roll"),
+        elevation: 4.0,
+        highlightElevation: 8.0,
         onPressed: (){ onPressed(); },
       ),
       body: new Scrollbar(
