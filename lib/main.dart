@@ -72,7 +72,10 @@ class _MyHomePageState extends State<MyHomePage>
           }),
         ],
       ),
-      bottomNavigationBar: new BottomNavigationBar(
+      bottomNavigationBar: new BottomAppBar(
+        elevation: appbarElevation,
+        hasNotch: true,
+        child: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
             const BottomNavigationBarItem(icon: const Icon(Icons.casino), title: const Text('Dice')),
@@ -80,20 +83,21 @@ class _MyHomePageState extends State<MyHomePage>
             const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
             const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
           ], currentIndex: index, onTap: (int index) {
-            switch(index){
-              case 2:
-                setState(() {
-                  this.index = index;
-                  this.appbarElevation = 4.0;
-                });
-                break;
-              default:
-                setState(() {
-                  this.index = index;
-                  this.appbarElevation = 0.0;
-                });
-            }
-            },
+          switch(index){
+            case 2:
+              setState(() {
+                this.index = index;
+                this.appbarElevation = 4.0;
+              });
+              break;
+            default:
+              setState(() {
+                this.index = index;
+                this.appbarElevation = 0.0;
+              });
+          }
+        },
+        ),
       ),
       body: new Stack(
         children: <Widget>[
