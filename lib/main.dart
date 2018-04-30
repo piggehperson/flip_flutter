@@ -49,7 +49,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with TickerProviderStateMixin {
   int index = 0;
-  double appbarElevation = 0.0;
+  double appbarElevationScale = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage>
         // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title, style: Theme.of(context).textTheme.title,),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: appbarElevation,
+        elevation: appbarElevationScale * 4,
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
             Navigator.of(context).pushNamed('/settings');
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage>
         ],
       ),
       bottomNavigationBar: new BottomAppBar(
-        elevation: appbarElevation,
+        elevation: appbarElevationScale * 8,
         hasNotch: true,
         child: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -87,13 +87,13 @@ class _MyHomePageState extends State<MyHomePage>
             case 2:
               setState(() {
                 this.index = index;
-                this.appbarElevation = 4.0;
+                this.appbarElevationScale = 1.0;
               });
               break;
             default:
               setState(() {
                 this.index = index;
-                this.appbarElevation = 0.0;
+                this.appbarElevationScale = 0.0;
               });
           }
         },
