@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage>
               case 2:
                 setState(() {
                   this.index = index;
-                  this.appbarElevation = 2.0;
+                  this.appbarElevation = 4.0;
                 });
                 break;
               default:
