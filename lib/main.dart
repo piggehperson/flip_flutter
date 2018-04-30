@@ -227,6 +227,7 @@ class _CoinPageState extends State<CoinPage> {
   }
 
   void _onPressed(){
+    splashWidgetKey.currentState.splash();
     setState((){
       coinNumber = _randomize();
       switch (coinNumber){
