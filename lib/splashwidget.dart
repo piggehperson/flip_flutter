@@ -11,7 +11,7 @@ class SplashWidget extends StatefulWidget {
 }
 
 class SplashWidgetState extends State<SplashWidget>
-    with SingleTickerProviderStateMixin {
+  with TickerProviderStateMixin {
   Animation<double> sizeAnimation;
   Animation<double> opacityAnimation;
   AnimationController controller;
@@ -22,7 +22,7 @@ class SplashWidgetState extends State<SplashWidget>
     super.initState();
     controller = new AnimationController(
         duration: const Duration(milliseconds: 250), vsync: this);
-    /*sizeAnimation = new Tween(begin: 0.0, end: widget.size).chain(
+    sizeAnimation = new Tween(begin: 0.0, end: widget.size).chain(
         new CurveTween(
           curve: Curves.easeInOut,
         )
@@ -32,8 +32,9 @@ class SplashWidgetState extends State<SplashWidget>
 
         });
       })
-    ;*/
+    ;
     opacityAnimation = new CurvedAnimation(parent: controller, curve: Curves.easeIn);
+    controller.value = controller.upperBound;
   }
 
   void splash(){

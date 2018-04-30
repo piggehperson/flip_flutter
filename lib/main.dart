@@ -46,7 +46,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with TickerProviderStateMixin {
   int index = 0;
   double appbarElevation = 0.0;
 
@@ -105,24 +106,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           new Offstage(
             offstage: index != 1,
-            child: new TickerMode(
-              enabled: index == 1,
-              child: new CoinPage(),
-            ),
+            child: new CoinPage()
           ),
           new Offstage(
             offstage: index != 2,
-            child: new TickerMode(
-              enabled: index == 2,
-              child: new ListPage(),
-            ),
+            child: new ListPage(),
           ),
           new Offstage(
             offstage: index != 3,
-            child: new TickerMode(
-              enabled: index == 3,
-              child: new D20Page(),
-            ),
+            child: new D20Page(),
           ),
         ],
       ),
@@ -206,7 +198,7 @@ class _CoinPageState extends State<CoinPage> {
           alignment: new FractionalOffset(0.5,0.25),
           child: new SplashWidget(
             key: splashWidgetKey,
-            size: 250.0,
+            size: 200.0,
             child: new Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
