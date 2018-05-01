@@ -493,6 +493,7 @@ class D20PageState extends State<D20Page> {
      if there's an error needs to be shown on this Widget's Scaffold so it can
      move the FAB out of the way. */
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<SplashWidgetState> _splashWidgetKey = new GlobalKey<SplashWidgetState>();
 
   //These functions validate the TextFields that control Min and Max variables.
   String validateMin(String value){
@@ -555,8 +556,20 @@ class D20PageState extends State<D20Page> {
                   children: <Widget>[
                     new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[new Column(
                       children: <Widget>[
-                        new Text('You rolled', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                        new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                        new SplashWidget(
+                          key: _splashWidgetKey,
+                          size: 150.0,
+                          child: new Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                new Text('You rolled', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                                const SizedBox(height:8.0),
+                                new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                              ]
+                          ),
+                        ),
                       ],),],),
                     const SizedBox(height: 32.0),
                     new Text('From', style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
@@ -593,6 +606,7 @@ class D20PageState extends State<D20Page> {
 
   void onPressed(){
     if (_formKey.currentState.validate()){
+      _splashWidgetKey.currentState.splash();
       setState(() {
         diceNumber = randomize(min, max);
       });
