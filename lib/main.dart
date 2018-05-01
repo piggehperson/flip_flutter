@@ -10,15 +10,18 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  ThemeData _appTheme = new ThemeData(
+    primaryColor: Colors.amber.shade700,
+    accentColor: Colors.amberAccent.shade400,
+    brightness: Brightness.light,
+  );
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Flip',
-      theme: new ThemeData(
-        primaryColor: Colors.amber.shade700,
-        accentColor: Colors.amberAccent.shade400,
-        brightness: Brightness.light,
-      ),
+      theme: _appTheme,
       home: new MyHomePage(title: 'Flip'),
       routes: <String, WidgetBuilder> {
         '/home': (BuildContext context) => new MyHomePage(),
@@ -391,7 +394,7 @@ class _ListPageState extends State<ListPage> {
               itemBuilder: (context, index){
                 Color shadeColor;
                 if (!index.isEven){
-                  shadeColor = Colors.grey.shade200;
+                  shadeColor = const Color(0x11000000);
                 }
                 return new ListItem(
                   label: itemsList[index],
