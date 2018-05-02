@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
   ThemeData _appTheme = new ThemeData(
+    primarySwatch: Colors.amber,
     primaryColor: Colors.amber.shade700,
     accentColor: Colors.amberAccent.shade400,
     brightness: Brightness.light,
@@ -85,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage>
             const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
             const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
             const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
+            //const BottomNavigationBarItem(icon: const Icon(Icons.settings), title: const Text('testSettings')),
           ], currentIndex: index, onTap: (int index) {
           switch(index){
             case 2:
@@ -122,6 +124,10 @@ class _MyHomePageState extends State<MyHomePage>
           new Offstage(
             offstage: index != 3,
             child: new D20Page(),
+          ),
+          new Offstage(
+            offstage: index != 4,
+            child: new SettingsPage(),
           ),
         ],
       ),
@@ -630,79 +636,87 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool useDarkTheme = false;
-  Widget trailing = const CircularProgressIndicator();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  SharedPreferences _prefs;
+
+  ThemeData _themeData = new ThemeData(
+    primarySwatch: Colors.amber,
+    primaryColor: Colors.amber.shade700,
+    accentColor: Colors.amberAccent.shade400,
+  );
 
   initPrefs() async{
-    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-    sharedPrefs.getBool("use_dark_theme") == null
-        ? useDarkTheme = false
-        : useDarkTheme = sharedPrefs.getBool("use_dark_theme");
-    //useDarkTheme = sharedPrefs.getBool("use_dark_theme");
-    setState((){
-      trailing = new Switch(
-          value: useDarkTheme,
-          onChanged: (bool value){
-            switchTheme(value);
-            setState((){useDarkTheme = value;});
-          }
-      );
+    useDarkTheme = false;
+    SharedPreferences.getInstance().then((SharedPreferences value) {
+      _prefs = value;
+      if (value.getBool("use_dark_theme") == null){
+        useDarkTheme = false;
+      } else if (value.getBool("use_dark_theme") == null){
+        useDarkTheme = false;
+      } else{
+        useDarkTheme = value.getBool("use_dark_theme");
+      }
+      switch (useDarkTheme){
+        case true:
+          _themeData = _themeData.copyWith(brightness: Brightness.dark);
+          break;
+        case false:
+          _themeData = _themeData.copyWith(brightness: Brightness.light);
+          break;
+      }
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     initPrefs();
-    return new Scaffold(
-        body: new ListView(
-          children: <Widget>[
-            new AppBar(
-              leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,), onPressed: (){Navigator.of(context).pop();}, tooltip: "Back"),
-              title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-            ),
-            new ListTile(
-              leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
-              title: new Text('Dark theme (WIP)', /*style: Theme.of(context).textTheme.subhead*/),
-              trailing: trailing,
-            ),
-          ],
-        )
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //initPrefs();
+    return new Theme(
+      data: _themeData,
+      child: new Scaffold(
+        key: _scaffoldKey,
+        appBar: new AppBar(
+          title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+        ),
+        body: new ListTile(
+          leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
+          title: new Text('Dark theme (WIP)'),
+          trailing: /*_trailing*/
+          new Switch(
+              value: useDarkTheme,
+              onChanged: (bool value){
+                switchTheme(value);
+                setState((){
+                  useDarkTheme = value;
+                });
+              }
+          ),
+        ),
+      ),
     );
-    /*new FutureBuilder<SharedPreferences>(
-      future: SharedPreferences.getInstance(),
-      builder:
-          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-            return new Center(child: new Text("something went wrong!!"),);
-          default:
-            if (!snapshot.hasError) {
-              return snapshot.data.getBool("use_dark_theme") != null
-                  ? new MainView()
-                  : new LoadingScreen();
-            } else {
-              return new Center(child: new Text("something went wrong: $snapshot.error"),);
-            }
-      }
-      },
-    );*/
   }
 
   void switchTheme(bool isDark){
     switch (isDark){
       case true:
-
+        setState(() {
+          _themeData = _themeData.copyWith(brightness: Brightness.dark);
+        });
         break;
       case false:
-
+        setState(() {
+          _themeData = _themeData.copyWith(brightness: Brightness.light);
+        });
         break;
     }
-        () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('use_dark_theme', isDark);
-      print('stored ' + isDark.toString() + ' to SharedPrefs');
-    };
+    _prefs.setBool('use_dark_theme', isDark);
+    //_scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text("Wrote " + isDark.toString() + " to Prefs!!")));
   }
 }
