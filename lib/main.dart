@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage>
             const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
             const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
             const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
-            //const BottomNavigationBarItem(icon: const Icon(Icons.settings), title: const Text('testSettings')),
+            const BottomNavigationBarItem(icon: const Icon(Icons.settings), title: const Text('testSettings')),
           ], currentIndex: index, onTap: (int index) {
           switch(index){
             case 2:
@@ -444,7 +444,7 @@ class _ListItemState extends State<ListItem> {
   @override
   Widget build(BuildContext context){
     return new Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for the Material itself
+        padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for outside the item
         /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
         child: widget.index == widget.listLength - 1
             ? new Padding(
@@ -454,30 +454,28 @@ class _ListItemState extends State<ListItem> {
             icon: const Icon(Icons.add),
             label: const Text("Add a Thing"),
             textColor: Theme.of(context).primaryColor,
-            highlightElevation: 0.0,
+            highlightedBorderColor: Colors.transparent,
           )
         )
-            : new Material( //This is a normal list item
-            elevation: 0.0,
-            color: widget.shadeColor,
-            borderRadius: const BorderRadius.all(const Radius.circular(8.0)),
-            child: new Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the stuff inside the Material
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Expanded(
-                    child: new Text(widget.label, style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
-                  ),
-                  new IconButton(
-                      icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
-                      tooltip: 'Remove this Thing',
-                      onPressed: (){widget.actionCallback();}
-                  )
-                ],
-              ),
-            )
+            : new DecoratedBox(
+          decoration: new BoxDecoration(color: widget.shadeColor, borderRadius: new BorderRadius.circular(8.0)),
+          child: new Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the label and button
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                new Expanded(
+                  child: new Text(widget.label, style: Theme.of(context).textTheme.subhead.copyWith(color: Theme.of(context).textTheme.display1.color)),
+                ),
+                new IconButton(
+                    icon: new Icon(Icons.close, color: Theme.of(context).textTheme.display1.color,),
+                    tooltip: 'Remove this Thing',
+                    onPressed: (){widget.actionCallback();}
+                )
+              ],
+            ),
+          ),
         )
     );
   }
