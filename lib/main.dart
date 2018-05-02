@@ -454,7 +454,7 @@ class _ListItemState extends State<ListItem> {
             icon: const Icon(Icons.add),
             label: const Text("Add a Thing"),
             textColor: Theme.of(context).primaryColor,
-            highlightedBorderColor: Theme.of(context).dividerColor,
+            highlightedBorderColor: Colors.transparent,
           )
         )
             : new DecoratedBox(
