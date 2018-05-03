@@ -120,10 +120,6 @@ class _MyHomePageState extends State<MyHomePage>
             offstage: index != 3,
             child: new D20Page(),
           ),
-          new Offstage(
-            offstage: index != 4,
-            child: new SettingsPage(),
-          ),
         ],
       ),
     );
@@ -707,12 +703,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 });
               }
           ),
+          onTap: (){ switchTheme(!useDarkTheme); },
         ),
       ),
     );
   }
 
   void switchTheme(bool isDark){
+    setState(() {
+      useDarkTheme = isDark;
+    });
     switch (isDark){
       case true:
         _scaffoldKey.currentState.setState(() {
