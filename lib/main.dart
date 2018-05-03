@@ -24,10 +24,6 @@ class MyApp extends StatelessWidget {
       title: 'Flip',
       theme: _appTheme,
       home: new MyHomePage(title: 'Flip'),
-      routes: <String, WidgetBuilder> {
-        '/home': (BuildContext context) => new MyHomePage(),
-        '/settings' : (BuildContext context) => new SettingsPage()
-      },
     );
   }
 }
@@ -72,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage>
         elevation: appbarElevationScale * 4,
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
-            Navigator.of(context).pushNamed('/settings');
+            Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new SettingsPage()));
           }),
         ],
       ),
@@ -305,12 +301,15 @@ class _ListPageState extends State<ListPage> {
           actions: <Widget>[
             new FlatButton(
               child: const Text("Cancel"),
+              textColor: Theme.of(context).primaryColor,
               onPressed: (){
                 Navigator.of(context).pop();
               },
             ),
-            new FlatButton(
+            new RaisedButton(
               child: const Text("Add"),
+              textColor: Theme.of(context).dialogBackgroundColor,
+              color: Theme.of(context).primaryColor,
               onPressed: (){
                 setState((){
                   itemsList.insert(itemsList.length - 1, text);
@@ -380,6 +379,7 @@ class _ListPageState extends State<ListPage> {
                             Navigator.of(context).pop();
                           },
                           child: const Text("OK"),
+                          textColor: Theme.of(context).primaryColor,
                         ),
                       ],
                     );}
