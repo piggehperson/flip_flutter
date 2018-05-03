@@ -82,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage>
             const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
             const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
             const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
-            const BottomNavigationBarItem(icon: const Icon(Icons.settings), title: const Text('testSettings')),
           ], currentIndex: index, onTap: (int index) {
           switch(index){
             case 2:
@@ -697,7 +696,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: new ListTile(
           leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
-          title: new Text('Dark theme (WIP)'),
+          title: new Text('Dark theme (broken)'),
           trailing: /*_trailing*/
           new Switch(
               value: useDarkTheme,
