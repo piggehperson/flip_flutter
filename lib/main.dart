@@ -322,6 +322,7 @@ class _ListPageState extends State<ListPage> {
               child: const Text("Add"),
               textColor: Theme.of(context).dialogBackgroundColor,
               color: Theme.of(context).primaryColor,
+              elevation: 0.0,
               onPressed: (){
                 setState((){
                   _itemsList.insert(_itemsList.length - 1, text);
@@ -360,7 +361,7 @@ class _ListPageState extends State<ListPage> {
                     icon: const Icon(Icons.add),
                     label: const Text("Add a Thing"),
                     color: Theme.of(context).accentColor,
-                    shape: const StadiumBorder(),
+                    //shape: const RoundedRectangleBorder(borderRadius: const BorderRadius.all(const Radius.circular(8.0))),
                   )
                 ]
             ),
@@ -464,11 +465,12 @@ class _ListItemState extends State<ListItem> {
             icon: const Icon(Icons.add),
             label: const Text("Add a Thing"),
             textColor: Theme.of(context).primaryColor,
-            highlightedBorderColor: Colors.transparent,
+            highlightElevation: 0.0,
+            highlightedBorderColor: Theme.of(context).dividerColor,
           )
         )
             : new DecoratedBox(
-          decoration: new BoxDecoration(color: widget.shadeColor, borderRadius: new BorderRadius.circular(8.0)),
+          decoration: new BoxDecoration(color: widget.shadeColor, borderRadius: new BorderRadius.circular(2.0)),
           child: new Padding(
             padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the label and button
             child: new Row(
