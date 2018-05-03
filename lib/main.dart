@@ -263,17 +263,29 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
 
-  int fakeListLength = 100;
-  List<String> itemsList;
+  List<String> _itemsList;
+  SharedPreferences _prefs;
 
   @override
   void initState() {
     super.initState();
     initList();
+    initPrefs();
+  }
+
+  initPrefs() async{
+    SharedPreferences.getInstance().then((SharedPreferences value) {
+      _prefs = value;
+      if (_prefs.getStringList("itemsList") != null){
+        setState(() {
+          _itemsList = _prefs.getStringList("itemsList");
+        });
+      }
+    });
   }
 
   void initList(){
-    itemsList = [
+    _itemsList = [
       "NewThing",
       "MyThing",
       "HelloThing",
@@ -312,7 +324,8 @@ class _ListPageState extends State<ListPage> {
               color: Theme.of(context).primaryColor,
               onPressed: (){
                 setState((){
-                  itemsList.insert(itemsList.length - 1, text);
+                  _itemsList.insert(_itemsList.length - 1, text);
+                  _prefs.setStringList("itemsList", _itemsList);
                 });
                 Navigator.of(context).pop();
               },
@@ -321,23 +334,19 @@ class _ListPageState extends State<ListPage> {
         );
       },
     );
-
-    /*setState((){
-      itemsList.add("This item was generated an addNewItem() call");
-    });*/
   }
 
   @override
   Widget build(BuildContext context) {
-    if (itemsList == null){
+    if (_itemsList == null){
       initList();
     }
 
     return new Stack(children: <Widget>[
       new Offstage( //Show this if there are no items in the list
-        offstage: itemsList.length > 1,
+        offstage: _itemsList.length > 1,
         child: new TickerMode(
-          enabled: itemsList.length == 1,
+          enabled: _itemsList.length == 1,
           child: new Align(
             alignment: new FractionalOffset(0.5,0.40),
             child: new Column(
@@ -359,19 +368,19 @@ class _ListPageState extends State<ListPage> {
         ),
       ),
       new Offstage( //show this if there are items in the list
-        offstage: itemsList.length == 1,
+        offstage: _itemsList.length == 1,
         child: new TickerMode(
-          enabled: itemsList.length > 1,
+          enabled: _itemsList.length > 1,
           child: new Scaffold(
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             floatingActionButton: new FloatingActionButton.extended(
               onPressed: (){
-                if (itemsList.length > 0){
+                if (_itemsList.length > 0){
                   showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
                     return new AlertDialog(
                       title: const Text('Item selected from the list'),
                       content: new Text(
-                          itemsList[new Random().nextInt(itemsList.length - 1)]),
+                          _itemsList[new Random().nextInt(_itemsList.length - 1)]),
                       actions: <
                           Widget>[ //AlertDialog with no buttons makes me nut but that's bad ux so i gotta abstain
                         new FlatButton(
@@ -396,20 +405,21 @@ class _ListPageState extends State<ListPage> {
             body: new Scrollbar(child:
             new ListView.builder(
               padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
-              itemCount: itemsList.length,
+              itemCount: _itemsList.length,
               itemBuilder: (context, index){
                 Color shadeColor;
                 if (!index.isEven){
                   shadeColor = const Color(0x11000000);
                 }
                 return new ListItem(
-                  label: itemsList[index],
+                  label: _itemsList[index],
                   index: index,
                   shadeColor: shadeColor,
-                  listLength: itemsList.length,
-                  actionCallback: index != itemsList.length - 1
+                  listLength: _itemsList.length,
+                  actionCallback: index != _itemsList.length - 1
                     ? (){ //this is a regular list item
-                    setState((){ itemsList.removeAt(index); });
+                    setState((){ _itemsList.removeAt(index); });
+                    _prefs.setStringList("itemsList", _itemsList);
                   }
                   : (){ //this is the end item, prompt to add an item
                     dialogNewItem(context);
@@ -704,12 +714,12 @@ class _SettingsPageState extends State<SettingsPage> {
   void switchTheme(bool isDark){
     switch (isDark){
       case true:
-        setState(() {
+        _scaffoldKey.currentState.setState(() {
           _themeData = _themeData.copyWith(brightness: Brightness.dark);
         });
         break;
       case false:
-        setState(() {
+        _scaffoldKey.currentState.setState(() {
           _themeData = _themeData.copyWith(brightness: Brightness.light);
         });
         break;
