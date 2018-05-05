@@ -68,7 +68,10 @@ class _MyHomePageState extends State<MyHomePage>
         elevation: appbarElevationScale * 4,
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
-            Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new SettingsPage()));
+            Navigator.push(
+                context,
+              new MaterialPageRoute(builder: (BuildContext context) => new SettingsPage())
+            );
           }),
         ],
       ),
@@ -435,7 +438,7 @@ class ListItem extends StatefulWidget {
   ListItem({this.label, this.shadeColor, this.index, this.listLength, this.actionCallback})
       : assert(label != null), assert(index != null);
 
-  String label;
+  final String label;
   final int index;
   final int listLength;
   final Color shadeColor;
@@ -693,8 +696,7 @@ class _SettingsPageState extends State<SettingsPage> {
         body: new ListTile(
           leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
           title: new Text('Dark theme (broken)'),
-          trailing: /*_trailing*/
-          new Switch(
+          trailing: new Switch(
               value: useDarkTheme,
               onChanged: (bool value){
                 switchTheme(value);
