@@ -145,19 +145,22 @@ class _DicePageState extends State<DicePage> {
     return new Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: new Align(
-          alignment: new FractionalOffset(0.5,0.25),
-          child: new SplashWidget(
-            key: splashWidgetKey,
-            size: 150.0,
-            child: new Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text('You rolled a', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                  const SizedBox(height:8.0),
-                  new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
-                ]
+          alignment: new FractionalOffset(0.5,0.30),
+          child: new SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 80.0),
+            child: new SplashWidget(
+              key: splashWidgetKey,
+              size: 150.0,
+              child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new Text('You rolled a', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                    const SizedBox(height:8.0),
+                    new Text(diceNumber.toString(), style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                  ]
+              ),
             ),
           ),
         ),
@@ -202,19 +205,22 @@ class _CoinPageState extends State<CoinPage> {
     return new Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: new Align(
-          alignment: new FractionalOffset(0.5,0.25),
-          child: new SplashWidget(
-            key: splashWidgetKey,
-            size: 200.0,
-            child: new Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text('You flipped', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                  const SizedBox(height:8.0),
-                  new Text(coinString, style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
-                ]
+          alignment: new FractionalOffset(0.5,0.30),
+          child: new SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 80.0),
+            child: new SplashWidget(
+              key: splashWidgetKey,
+              size: 200.0,
+              child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new Text('You flipped', style: Theme.of(context).textTheme.title.copyWith(color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                    const SizedBox(height:8.0),
+                    new Text(coinString, style: Theme.of(context).textTheme.display2.copyWith(color: Theme.of(context).primaryColor, fontFamily: 'ProductSans')),
+                  ]
+              ),
             ),
           ),
         ),
