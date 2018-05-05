@@ -460,7 +460,6 @@ class _ListItemState extends State<ListItem> {
   Widget build(BuildContext context){
     return new Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0), //Padding for outside the item
-        /*padding: new EdgeInsets.fromLTRB(16.0,8.0,4.0,8.0),*/
         child: widget.index == widget.listLength - 1
             ? new Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -476,7 +475,7 @@ class _ListItemState extends State<ListItem> {
             : new DecoratedBox(
           decoration: new BoxDecoration(color: widget.shadeColor, borderRadius: new BorderRadius.circular(2.0)),
           child: new Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0), //Padding for the label and button
+            padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0), //Padding for the label and button
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -570,7 +569,7 @@ class D20PageState extends State<D20Page> {
       ),
       body: new Scrollbar(
         child: new SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 80.0),
+            padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 80.0),
             child: new Form(
               key: _formKey,
               autovalidate: true,
