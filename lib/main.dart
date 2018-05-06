@@ -475,7 +475,7 @@ class _ListItemState extends State<ListItem> {
             : new DecoratedBox(
           decoration: new BoxDecoration(color: widget.shadeColor, borderRadius: new BorderRadius.circular(2.0)),
           child: new Padding(
-            padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0), //Padding for the label and button
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0, right: 8.0, bottom: 8.0), //Padding for the label and button
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -662,21 +662,23 @@ class _SettingsPageState extends State<SettingsPage> {
     useDarkTheme = false;
     SharedPreferences.getInstance().then((SharedPreferences value) {
       _prefs = value;
-      if (value.getBool("use_dark_theme") == null){
-        useDarkTheme = false;
-      } else if (value.getBool("use_dark_theme") == null){
-        useDarkTheme = false;
-      } else{
-        useDarkTheme = value.getBool("use_dark_theme");
-      }
-      switch (useDarkTheme){
-        case true:
-          _themeData = _themeData.copyWith(brightness: Brightness.dark);
-          break;
-        case false:
-          _themeData = _themeData.copyWith(brightness: Brightness.light);
-          break;
-      }
+      setState(() {
+        if (value.getBool("use_dark_theme") == null){
+          useDarkTheme = false;
+        } else if (value.getBool("use_dark_theme") == null){
+          useDarkTheme = false;
+        } else{
+          useDarkTheme = value.getBool("use_dark_theme");
+        }
+        switch (useDarkTheme){
+          case true:
+            _themeData = _themeData.copyWith(brightness: Brightness.dark);
+            break;
+          case false:
+            _themeData = _themeData.copyWith(brightness: Brightness.light);
+            break;
+        }
+      });
     });
   }
 
