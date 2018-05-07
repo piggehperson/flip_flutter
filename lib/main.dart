@@ -50,6 +50,41 @@ class _MyHomePageState extends State<MyHomePage>
     with TickerProviderStateMixin {
   int index = 0;
   double appbarElevationScale = 0.0;
+  ThemeData _themeData = new ThemeData(
+    primarySwatch: Colors.amber,
+    primaryColor: Colors.amber.shade700,
+    accentColor: Colors.amberAccent.shade400,
+    brightness: Brightness.light,
+  );
+
+  initPrefs() async{
+    bool useDarkTheme = false;
+    SharedPreferences.getInstance().then((SharedPreferences value) {
+      setState(() {
+        if (value.getBool("use_dark_theme") == null){
+          useDarkTheme = false;
+        } else if (value.getBool("use_dark_theme") == null){
+          useDarkTheme = false;
+        } else{
+          useDarkTheme = value.getBool("use_dark_theme");
+        }
+        switch (useDarkTheme){
+          case true:
+            _themeData = _themeData.copyWith(brightness: Brightness.dark);
+            break;
+          case false:
+            _themeData = _themeData.copyWith(brightness: Brightness.light);
+            break;
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPrefs();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,72 +94,75 @@ class _MyHomePageState extends State<MyHomePage>
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return new Scaffold(
-      appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title, style: Theme.of(context).textTheme.title,),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: appbarElevationScale * 4,
-        actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
-            Navigator.push(
-                context,
-                new MaterialPageRoute(builder: (BuildContext context) => new SettingsPage())
-            );
-          }),
-        ],
-      ),
-      bottomNavigationBar: new BottomAppBar(
-        elevation: appbarElevationScale * 8,
-        hasNotch: true,
-        child: new BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
-            const BottomNavigationBarItem(icon: const Icon(Icons.casino), title: const Text('Dice')),
-            const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
-            const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
-            const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
-          ], currentIndex: index, onTap: (int index) {
-          switch(index){
-            case 2:
-              setState(() {
-                this.index = index;
-                this.appbarElevationScale = 1.0;
-              });
-              break;
-            default:
-              setState(() {
-                this.index = index;
-                this.appbarElevationScale = 0.0;
-              });
-          }
-        },
-        ),
-      ),
-      body: new Stack(
-        children: <Widget>[
-          new Offstage(
-            offstage: index != 0,
-            child: new TickerMode(
-              enabled: index == 0,
-              child: new DicePage(),
+    return new AnimatedTheme(
+        data: _themeData,
+        child: new Scaffold(
+          appBar: new AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: new Text(widget.title, style: Theme.of(context).textTheme.title,),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            elevation: appbarElevationScale * 4,
+            actions: <Widget>[
+              new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (BuildContext context) => new SettingsPage())
+                );
+              }),
+            ],
+          ),
+          bottomNavigationBar: new BottomAppBar(
+            elevation: appbarElevationScale * 8,
+            hasNotch: true,
+            child: new BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              items: <BottomNavigationBarItem>[
+                const BottomNavigationBarItem(icon: const Icon(Icons.casino), title: const Text('Dice')),
+                const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
+                const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
+                const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
+              ], currentIndex: index, onTap: (int index) {
+              switch(index){
+                case 2:
+                  setState(() {
+                    this.index = index;
+                    this.appbarElevationScale = 1.0;
+                  });
+                  break;
+                default:
+                  setState(() {
+                    this.index = index;
+                    this.appbarElevationScale = 0.0;
+                  });
+              }
+            },
             ),
           ),
-          new Offstage(
-              offstage: index != 1,
-              child: new CoinPage()
+          body: new Stack(
+            children: <Widget>[
+              new Offstage(
+                offstage: index != 0,
+                child: new TickerMode(
+                  enabled: index == 0,
+                  child: new DicePage(),
+                ),
+              ),
+              new Offstage(
+                  offstage: index != 1,
+                  child: new CoinPage()
+              ),
+              new Offstage(
+                offstage: index != 2,
+                child: new ListPage(),
+              ),
+              new Offstage(
+                offstage: index != 3,
+                child: new D20Page(),
+              ),
+            ],
           ),
-          new Offstage(
-            offstage: index != 2,
-            child: new ListPage(),
-          ),
-          new Offstage(
-            offstage: index != 3,
-            child: new D20Page(),
-          ),
-        ],
-      ),
+        )
     );
   }
 }
@@ -693,14 +731,6 @@ class _SettingsPageState extends State<SettingsPage> {
         } else{
           useDarkTheme = value.getBool("use_dark_theme");
         }
-        switch (useDarkTheme){
-          case true:
-            _themeData = _themeData.copyWith(brightness: Brightness.dark);
-            break;
-          case false:
-            _themeData = _themeData.copyWith(brightness: Brightness.light);
-            break;
-        }
       });
     });
   }
@@ -714,29 +744,26 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     //initPrefs();
-    return new Theme(
-      data: _themeData,
-      child: new Scaffold(
-        key: _scaffoldKey,
-        appBar: new AppBar(
-          title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
+    return new Scaffold(
+      key: _scaffoldKey,
+      appBar: new AppBar(
+        title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: new ListTile(
+        leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
+        title: new Text('Dark theme (broken)'),
+        trailing: new Switch(
+            value: useDarkTheme,
+            onChanged: (bool value){
+              switchTheme(value);
+              setState((){
+                useDarkTheme = value;
+              });
+            }
         ),
-        body: new ListTile(
-          leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
-          title: new Text('Dark theme (broken)'),
-          trailing: new Switch(
-              value: useDarkTheme,
-              onChanged: (bool value){
-                switchTheme(value);
-                setState((){
-                  useDarkTheme = value;
-                });
-              }
-          ),
-          onTap: (){ switchTheme(!useDarkTheme); },
-        ),
+        onTap: (){ switchTheme(!useDarkTheme); },
       ),
     );
   }
@@ -745,18 +772,6 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       useDarkTheme = isDark;
     });
-    switch (isDark){
-      case true:
-        _scaffoldKey.currentState.setState(() {
-          _themeData = _themeData.copyWith(brightness: Brightness.dark);
-        });
-        break;
-      case false:
-        _scaffoldKey.currentState.setState(() {
-          _themeData = _themeData.copyWith(brightness: Brightness.light);
-        });
-        break;
-    }
     _prefs.setBool('use_dark_theme', isDark);
     //_scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text("Wrote " + isDark.toString() + " to Prefs!!")));
   }
