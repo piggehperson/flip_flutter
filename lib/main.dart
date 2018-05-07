@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage>
           new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
             Navigator.push(
                 context,
-              new MaterialPageRoute(builder: (BuildContext context) => new SettingsPage())
+                new MaterialPageRoute(builder: (BuildContext context) => new SettingsPage())
             );
           }),
         ],
@@ -112,8 +112,8 @@ class _MyHomePageState extends State<MyHomePage>
             ),
           ),
           new Offstage(
-            offstage: index != 1,
-            child: new CoinPage()
+              offstage: index != 1,
+              child: new CoinPage()
           ),
           new Offstage(
             offstage: index != 2,
@@ -348,115 +348,118 @@ class _ListPageState extends State<ListPage> {
       initList();
     }
 
-    return new Stack(children: <Widget>[
-      new Offstage( //Show this if there are no items in the list
-        offstage: _itemsList.length > 1,
-        child: new TickerMode(
-          enabled: _itemsList.length == 1,
-          child: new Align(
-            alignment: new FractionalOffset(0.5,0.40),
-            child: new Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Text("There's nothing here", style: Theme.of(context).textTheme.headline.copyWith(fontSize: 20.0, color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
-                  const SizedBox(height:16.0),
-                  new RaisedButton.icon(
-                    onPressed: (){ dialogNewItem(context); },
-                    icon: const Icon(Icons.add),
-                    label: const Text("Add a Thing"),
-                    color: Theme.of(context).accentColor,
-                    //shape: const RoundedRectangleBorder(borderRadius: const BorderRadius.all(const Radius.circular(8.0))),
-                  )
-                ]
+    return new Scaffold(
+      key: _scaffoldKey,
+      body: new Stack(children: <Widget>[
+        new Offstage( //Show this if there are no items in the list
+          offstage: _itemsList.length > 1,
+          child: new TickerMode(
+            enabled: _itemsList.length == 1,
+            child: new Align(
+              alignment: new FractionalOffset(0.5,0.40),
+              child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Text("There's nothing here", style: Theme.of(context).textTheme.headline.copyWith(fontSize: 20.0, color: Theme.of(context).textTheme.display1.color, fontFamily: 'ProductSans')),
+                    const SizedBox(height:16.0),
+                    new RaisedButton.icon(
+                      onPressed: (){ dialogNewItem(context); },
+                      icon: const Icon(Icons.add),
+                      label: const Text("Add a Thing"),
+                      color: Theme.of(context).accentColor,
+                      //shape: const RoundedRectangleBorder(borderRadius: const BorderRadius.all(const Radius.circular(8.0))),
+                    )
+                  ]
+              ),
             ),
           ),
         ),
-      ),
-      new Offstage( //show this if there are items in the list
-        offstage: _itemsList.length == 1,
-        child: new TickerMode(
-          enabled: _itemsList.length > 1,
-          child: new Scaffold(
-            key: _scaffoldKey,
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: new FloatingActionButton.extended(
-              onPressed: (){
-                if (_itemsList.length > 0){
-                  showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
-                    return new AlertDialog(
-                      title: const Text('Item selected from the list'),
-                      content: new Text(
-                          _itemsList[new Random().nextInt(_itemsList.length - 1)]),
-                      actions: <
-                          Widget>[ //AlertDialog with no buttons makes me nut but that's bad ux so i gotta abstain
-                        new FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("OK"),
-                          textColor: Theme.of(context).primaryColor,
-                        ),
-                      ],
-                    );}
-                  );
-                } else {
-                  Scaffold.of(context).showSnackBar(const SnackBar(content: const Text("There's nothing to pick from!")));
-                }
-              },
-              icon: const Icon(Icons.casino,),
-              label: const Text('Pick'),
-              elevation: 4.0,
-              highlightElevation: 8.0,
-            ),
-            body: new Scrollbar(child:
-            new ListView.builder(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
-              itemCount: _itemsList.length,
-              itemBuilder: (context, index){
-                Color shadeColor;
-                if (!index.isEven){
-                  shadeColor = const Color(0x11000000);
-                }
-                String _label = _itemsList[index];
-                int _rememberIndex = index;
-                return new ListItem(
-                  label: _label,
-                  index: index,
-                  shadeColor: shadeColor,
-                  listLength: _itemsList.length,
-                  actionCallback: index != _itemsList.length - 1
-                    ? (){ //this is a regular list item
-                    setState((){ _itemsList.removeAt(index); });
-                    _prefs.setStringList("itemsList", _itemsList);
-
-                    //show a Snackbar with an Undo button
-                    _scaffoldKey.currentState.showSnackBar(
-                      new SnackBar(
-                        content: new Text(_label + " removed"),
-                        action: new SnackBarAction(
-                            label: "Undo",
-                            onPressed: (){
-                              setState(() {
-                                _itemsList.insert(_rememberIndex, _label);
-                              });
-                              _prefs.setStringList("itemsList", _itemsList);
-                            }
-                        ),
-                      )
+        new Offstage( //show this if there are items in the list
+          offstage: _itemsList.length == 1,
+          child: new TickerMode(
+            enabled: _itemsList.length > 1,
+            child: new Scaffold(
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+              floatingActionButton: new FloatingActionButton.extended(
+                onPressed: (){
+                  if (_itemsList.length > 0){
+                    showDialog(context: context, barrierDismissible: true, builder: (BuildContext context) {
+                      return new AlertDialog(
+                        title: const Text('Item selected from the list'),
+                        content: new Text(
+                            _itemsList[new Random().nextInt(_itemsList.length - 1)]),
+                        actions: <
+                            Widget>[ //AlertDialog with no buttons makes me nut but that's bad ux so i gotta abstain
+                          new FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("OK"),
+                            textColor: Theme.of(context).primaryColor,
+                          ),
+                        ],
+                      );}
                     );
+                  } else {
+                    Scaffold.of(context).showSnackBar(const SnackBar(content: const Text("There's nothing to pick from!")));
                   }
-                  : (){ //this is the end item, prompt to add an item
-                    dialogNewItem(context);
-                  },
-                );
-              },
-            )
+                },
+                icon: const Icon(Icons.casino,),
+                label: const Text('Pick'),
+                elevation: 4.0,
+                highlightElevation: 8.0,
+              ),
+              body: new Scrollbar(child:
+              new ListView.builder(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
+                itemCount: _itemsList.length,
+                itemBuilder: (context, index){
+                  Color shadeColor;
+                  if (!index.isEven){
+                    shadeColor = const Color(0x11000000);
+                  }
+                  String _label = _itemsList[index];
+                  int _rememberIndex = index;
+                  return new ListItem(
+                    label: _label,
+                    index: index,
+                    shadeColor: shadeColor,
+                    listLength: _itemsList.length,
+                    actionCallback: index != _itemsList.length - 1
+                        ? (){ //this is a regular list item
+                      setState((){ _itemsList.removeAt(index); });
+                      _prefs.setStringList("itemsList", _itemsList);
+
+                      //show a Snackbar with an Undo button
+                      _scaffoldKey.currentState.showSnackBar(
+                          new SnackBar(
+                            content: new Text(_label + " removed"),
+                            action: new SnackBarAction(
+                                label: "Undo",
+                                onPressed: (){
+                                  setState(() {
+                                    _itemsList.insert(_rememberIndex, _label);
+                                  });
+                                  _prefs.setStringList("itemsList", _itemsList);
+                                }
+                            ),
+                          )
+                      );
+                    }
+                        : (){ //this is the end item, prompt to add an item
+                      dialogNewItem(context);
+                    },
+                  );
+                },
+              )
+              ),
             ),
           ),
         ),
-      ),
-    ],);
+      ],
+      )
+    );
   }
 }
 
