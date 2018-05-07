@@ -269,6 +269,7 @@ class _ListPageState extends State<ListPage> {
 
   List<String> _itemsList;
   SharedPreferences _prefs;
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -377,6 +378,7 @@ class _ListPageState extends State<ListPage> {
         child: new TickerMode(
           enabled: _itemsList.length > 1,
           child: new Scaffold(
+            key: _scaffoldKey,
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             floatingActionButton: new FloatingActionButton.extended(
               onPressed: (){
@@ -416,8 +418,10 @@ class _ListPageState extends State<ListPage> {
                 if (!index.isEven){
                   shadeColor = const Color(0x11000000);
                 }
+                String _label = _itemsList[index];
+                int _rememberIndex = index;
                 return new ListItem(
-                  label: _itemsList[index],
+                  label: _label,
                   index: index,
                   shadeColor: shadeColor,
                   listLength: _itemsList.length,
@@ -425,6 +429,22 @@ class _ListPageState extends State<ListPage> {
                     ? (){ //this is a regular list item
                     setState((){ _itemsList.removeAt(index); });
                     _prefs.setStringList("itemsList", _itemsList);
+
+                    //show a Snackbar with an Undo button
+                    _scaffoldKey.currentState.showSnackBar(
+                      new SnackBar(
+                        content: new Text(_label + " removed"),
+                        action: new SnackBarAction(
+                            label: "Undo",
+                            onPressed: (){
+                              setState(() {
+                                _itemsList.insert(_rememberIndex, _label);
+                              });
+                              _prefs.setStringList("itemsList", _itemsList);
+                            }
+                        ),
+                      )
+                    );
                   }
                   : (){ //this is the end item, prompt to add an item
                     dialogNewItem(context);
