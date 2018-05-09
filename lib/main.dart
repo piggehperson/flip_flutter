@@ -50,12 +50,15 @@ class _MyHomePageState extends State<MyHomePage>
     with TickerProviderStateMixin {
   int index = 0;
   double appbarElevationScale = 0.0;
+  //broken for now
   ThemeData _themeData = new ThemeData(
     primarySwatch: Colors.amber,
     primaryColor: Colors.amber.shade700,
     accentColor: Colors.amberAccent.shade400,
     brightness: Brightness.light,
   );
+  String _fabLabel = "Roll";
+  VoidCallback _fabAction;
 
   initPrefs() async{
     bool useDarkTheme = false;
@@ -114,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage>
           ),
           bottomNavigationBar: new BottomAppBar(
             elevation: appbarElevationScale * 8,
-            hasNotch: true,
+            hasNotch: false,
             child: new BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               items: <BottomNavigationBarItem>[
@@ -124,10 +127,32 @@ class _MyHomePageState extends State<MyHomePage>
                 const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
               ], currentIndex: index, onTap: (int index) {
               switch(index){
-                case 2:
+                case 0:
+                  setState(() {
+                    this.index = index;
+                    this.appbarElevationScale = 0.0;
+                    _fabLabel = "Roll";
+                  });
+                  break;
+                case 1:
+                  setState(() {
+                    this.index = index;
+                    this.appbarElevationScale = 0.0;
+                    _fabLabel = "Flip";
+                  });
+                  break;
+                  case 2:
                   setState(() {
                     this.index = index;
                     this.appbarElevationScale = 1.0;
+                    _fabLabel = "Pick";
+                  });
+                  break;
+                case 3:
+                  setState(() {
+                    this.index = index;
+                    this.appbarElevationScale = 0.0;
+                    _fabLabel = "Roll";
                   });
                   break;
                 default:
@@ -630,7 +655,7 @@ class D20PageState extends State<D20Page> {
       ),
       body: new Scrollbar(
         child: new SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 80.0),
+            padding: const EdgeInsets.only(left: 32.0, top: 16.0, right: 32.0, bottom: 80.0),
             child: new Form(
               key: _formKey,
               autovalidate: true,
