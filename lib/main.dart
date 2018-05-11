@@ -57,8 +57,6 @@ class _MyHomePageState extends State<MyHomePage>
     accentColor: Colors.amberAccent.shade400,
     brightness: Brightness.light,
   );
-  String _fabLabel = "Roll";
-  VoidCallback _fabAction;
 
   initPrefs() async{
     bool useDarkTheme = false;
@@ -106,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage>
             title: new Text(widget.title, style: Theme.of(context).textTheme.title,),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: appbarElevationScale * 4,
+
             actions: <Widget>[
               new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
                 Navigator.push(
@@ -127,32 +126,10 @@ class _MyHomePageState extends State<MyHomePage>
                 const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
               ], currentIndex: index, onTap: (int index) {
               switch(index){
-                case 0:
-                  setState(() {
-                    this.index = index;
-                    this.appbarElevationScale = 0.0;
-                    _fabLabel = "Roll";
-                  });
-                  break;
-                case 1:
-                  setState(() {
-                    this.index = index;
-                    this.appbarElevationScale = 0.0;
-                    _fabLabel = "Flip";
-                  });
-                  break;
                   case 2:
                   setState(() {
                     this.index = index;
                     this.appbarElevationScale = 1.0;
-                    _fabLabel = "Pick";
-                  });
-                  break;
-                case 3:
-                  setState(() {
-                    this.index = index;
-                    this.appbarElevationScale = 0.0;
-                    _fabLabel = "Roll";
                   });
                   break;
                 default:
@@ -385,12 +362,14 @@ class _ListPageState extends State<ListPage> {
               onPressed: (){
                 Navigator.of(context).pop();
               },
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(6.0)),
             ),
             new RaisedButton(
               child: const Text("Add"),
               textColor: Theme.of(context).dialogBackgroundColor,
               color: Theme.of(context).primaryColor,
               elevation: 0.0,
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(6.0)),
               onPressed: (){
                 setState((){
                   _itemsList.insert(_itemsList.length - 1, text);
@@ -431,7 +410,7 @@ class _ListPageState extends State<ListPage> {
                       icon: const Icon(Icons.add),
                       label: const Text("Add a Thing"),
                       color: Theme.of(context).accentColor,
-                      //shape: const RoundedRectangleBorder(borderRadius: const BorderRadius.all(const Radius.circular(8.0))),
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(6.0)),
                     )
                   ]
               ),
@@ -458,6 +437,7 @@ class _ListPageState extends State<ListPage> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(6.0)),
                             child: const Text("OK"),
                             textColor: Theme.of(context).primaryColor,
                           ),
@@ -555,11 +535,12 @@ class _ListItemState extends State<ListItem> {
             label: const Text("Add a Thing"),
             textColor: Theme.of(context).primaryColor,
             highlightElevation: 0.0,
-            highlightedBorderColor: Theme.of(context).dividerColor,
+            highlightedBorderColor: Colors.transparent,
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(6.0)),
           )
         )
             : new DecoratedBox(
-          decoration: new BoxDecoration(color: widget.shadeColor, borderRadius: new BorderRadius.circular(2.0)),
+          decoration: new BoxDecoration(color: widget.shadeColor, borderRadius: new BorderRadius.circular(6.0)),
           child: new Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, right: 8.0, bottom: 8.0), //Padding for the label and button
             child: new Row(
