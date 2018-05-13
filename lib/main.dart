@@ -784,7 +784,7 @@ class _SettingsPageState extends State<SettingsPage> {
             value: useDarkTheme,
             onChanged: (bool value){
               switchTheme(value);
-
+              _scaffoldKey.currentState.showSnackBar(const SnackBar(content: const Text("Close and reopen Flip to apply your theme!")) );
             }
         ),
         onTap: (){ switchTheme(!useDarkTheme); },
