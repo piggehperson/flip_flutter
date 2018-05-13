@@ -25,6 +25,7 @@ class MyAppState extends State<MyApp>{
     scaffoldBackgroundColor: Pigment.fromString("#FAFAFA"),
     dialogBackgroundColor: Pigment.fromString("#FFFFFF"),
     bottomAppBarColor: Pigment.fromString("#FAFAFA"),
+    dividerColor: Pigment.fromString("#E9E9E9"),
   );
 
   initPrefs() async{
@@ -37,18 +38,34 @@ class MyAppState extends State<MyApp>{
       } else{
         useDarkTheme = value.getBool("use_dark_theme");
       }
-      if (useDarkTheme == true){
-        setState(() {
-          _appTheme = new ThemeData(
-            primarySwatch: Colors.amber,
-            primaryColor: Colors.amber.shade700,
-            accentColor: Colors.amberAccent.shade400,
-            brightness: Brightness.dark,
-            scaffoldBackgroundColor: Pigment.fromString("#212121"),
-            dialogBackgroundColor: Pigment.fromString("#303030"),
-            bottomAppBarColor: Pigment.fromString("#212121"),
-          );
-        });
+      updateTheme(useDarkTheme);
+    });
+  }
+
+  void updateTheme(bool isDark) {
+    setState(() {
+      if (isDark == true){ //use the Dark theme
+        _appTheme = new ThemeData(
+          primarySwatch: Colors.amber,
+          primaryColor: Colors.amber.shade700,
+          accentColor: Colors.amberAccent.shade400,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: Pigment.fromString("#212121"),
+          dialogBackgroundColor: Pigment.fromString("#303030"),
+          bottomAppBarColor: Pigment.fromString("#212121"),
+          dividerColor: Pigment.fromString("#333333"),
+        );
+      } else { //use the default Light theme
+        _appTheme = new ThemeData(
+          primarySwatch: Colors.amber,
+          primaryColor: Colors.amber.shade700,
+          accentColor: Colors.amberAccent.shade400,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: Pigment.fromString("#FAFAFA"),
+          dialogBackgroundColor: Pigment.fromString("#FFFFFF"),
+          bottomAppBarColor: Pigment.fromString("#FAFAFA"),
+          dividerColor: Pigment.fromString("#E9E9E9"),
+        );
       }
     });
   }
@@ -107,7 +124,6 @@ class _MyHomePageState extends State<MyHomePage>
         title: new Text(widget.title, style: Theme.of(context).textTheme.title,),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: appbarElevationScale * 4,
-
         actions: <Widget>[
           new IconButton(icon: new Icon(Icons.settings, color: Theme.of(context).textTheme.title.color,), tooltip: 'Settings', onPressed: (){
             Navigator.push(
@@ -120,10 +136,11 @@ class _MyHomePageState extends State<MyHomePage>
       bottomNavigationBar: new BottomAppBar(
         elevation: appbarElevationScale * 8,
         hasNotch: false,
+        color: Theme.of(context).bottomAppBarColor,
         child: new BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
-            const BottomNavigationBarItem(icon: const Icon(Icons.casino), title: const Text('Dice')),
+            const BottomNavigationBarItem(icon: const Icon(Icons.casino), title: const Text('Dice'),),
             const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
             const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
             const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
@@ -462,7 +479,8 @@ class _ListPageState extends State<ListPage> {
                 itemBuilder: (context, index){
                   Color shadeColor;
                   if (!index.isEven){
-                    shadeColor = const Color(0x11000000);
+                    //shadeColor = const Color(0x11000000);
+                    shadeColor = Theme.of(context).dividerColor;
                   }
                   String _label = _itemsList[index];
                   int _rememberIndex = index;
@@ -753,6 +771,10 @@ class _SettingsPageState extends State<SettingsPage> {
         title: new Text('Settings', style: new TextStyle(color: Theme.of(context).primaryColor),),
         elevation: 0.0,
         backgroundColor: Colors.transparent,
+        leading: new IconButton(
+            icon: new Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,),
+            onPressed: (){ Navigator.pop(context); },
+        ),
       ),
       body: new ListTile(
         leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
