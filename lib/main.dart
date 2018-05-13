@@ -779,7 +779,7 @@ class _SettingsPageState extends State<SettingsPage> {
       body: new ListTile(
         leading: new Icon(Icons.brightness_3, color: Theme.of(context).textTheme.title.color,),
         title: const Text('Dark theme (requires restart)'),
-        subtitle: new Text(useDarkTheme ? "App will use a dark theme" : "App will use a light theme"),
+        subtitle: new Text(useDarkTheme ? "App will use a dark theme next time you open it" : "App will use a light theme next time you open it"),
         trailing: new Switch(
             value: useDarkTheme,
             onChanged: (bool value){
