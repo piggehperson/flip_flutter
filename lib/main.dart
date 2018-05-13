@@ -784,10 +784,6 @@ class _SettingsPageState extends State<SettingsPage> {
             value: useDarkTheme,
             onChanged: (bool value){
               switchTheme(value);
-              _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(value
-                  ? "Close and reopen Flip to apply the dark theme!"
-                  : "Close and reopen Flip to apply the light theme!"
-              )) );
             }
         ),
         onTap: (){ switchTheme(!useDarkTheme); },
@@ -800,6 +796,9 @@ class _SettingsPageState extends State<SettingsPage> {
       useDarkTheme = isDark;
     });
     _prefs.setBool('use_dark_theme', isDark);
-    //_scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text("Wrote " + isDark.toString() + " to Prefs!!")));
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(useDarkTheme
+        ? "Close and reopen Flip to apply the dark theme!"
+        : "Close and reopen Flip to apply the light theme!"
+    )) );
   }
 }
