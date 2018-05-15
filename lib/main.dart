@@ -738,6 +738,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool useDarkTheme = false;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   SharedPreferences _prefs;
+  bool _wasDark = false;
 
   initPrefs() async{
     useDarkTheme = false;
@@ -764,7 +765,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    //initPrefs();
+    if (Theme.of(context).brightness == Brightness.dark){ _wasDark = true; }
+
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
@@ -796,9 +798,11 @@ class _SettingsPageState extends State<SettingsPage> {
       useDarkTheme = isDark;
     });
     _prefs.setBool('use_dark_theme', isDark);
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(useDarkTheme
-        ? "Close and reopen Flip to apply the dark theme!"
-        : "Close and reopen Flip to apply the light theme!"
-    )) );
+    if (_wasDark != isDark){
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(useDarkTheme
+          ? "Close and reopen Flip to apply the dark theme!"
+          : "Close and reopen Flip to apply the light theme!"
+      )) );
+    }
   }
 }
