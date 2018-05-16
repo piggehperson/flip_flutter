@@ -360,12 +360,14 @@ class _ListPageState extends State<ListPage> {
   void dialogNewItem(BuildContext context){
     String text = "Blank Thing";
     TextField textField = new TextField(
+      autofocus: true,
       decoration: const InputDecoration(
         hintText: "Name your Thing",
       ),
       onChanged: (String value){
         text = value;
       },
+      onSubmitted: (String value){ addNewItem(value); },
     );
     showDialog(
       context: context,
@@ -389,18 +391,20 @@ class _ListPageState extends State<ListPage> {
               color: Theme.of(context).primaryColor,
               elevation: 0.0,
               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(6.0)),
-              onPressed: (){
-                setState((){
-                  _itemsList.insert(_itemsList.length - 1, text);
-                  _prefs.setStringList("itemsList", _itemsList);
-                });
-                Navigator.of(context).pop();
-              },
+              onPressed: (){ addNewItem(text); },
             ),
           ],
         );
       },
     );
+  }
+
+  void addNewItem(String text) {
+    setState((){
+      _itemsList.insert(_itemsList.length - 1, text);
+      _prefs.setStringList("itemsList", _itemsList);
+    });
+    Navigator.of(context).pop();
   }
 
   @override
