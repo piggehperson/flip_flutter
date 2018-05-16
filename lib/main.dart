@@ -17,7 +17,16 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp>{
-  ThemeData _appTheme = new ThemeData.fallback();
+  ThemeData _appTheme = new ThemeData(
+    primarySwatch: Colors.amber,
+    primaryColor: Colors.amber.shade700,
+    accentColor: Colors.amberAccent.shade400,
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: Pigment.fromString("#FAFAFA"),
+    dialogBackgroundColor: Pigment.fromString("#FFFFFF"),
+    bottomAppBarColor: Pigment.fromString("#FAFAFA"),
+    dividerColor: Pigment.fromString("#0000000F"),
+  );
 
   initPrefs() async{
     bool useDarkTheme = false;
