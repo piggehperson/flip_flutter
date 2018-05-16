@@ -17,16 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp>{
-  ThemeData _appTheme = new ThemeData(
-    primarySwatch: Colors.amber,
-    primaryColor: Colors.amber.shade700,
-    accentColor: Colors.amberAccent.shade400,
-    brightness: Brightness.light,
-    scaffoldBackgroundColor: Pigment.fromString("#FAFAFA"),
-    dialogBackgroundColor: Pigment.fromString("#FFFFFF"),
-    bottomAppBarColor: Pigment.fromString("#FAFAFA"),
-    dividerColor: Pigment.fromString("#E9E9E9"),
-  );
+  ThemeData _appTheme = new ThemeData.fallback();
 
   initPrefs() async{
     bool useDarkTheme = false;
@@ -53,7 +44,7 @@ class MyAppState extends State<MyApp>{
           scaffoldBackgroundColor: Pigment.fromString("#212121"),
           dialogBackgroundColor: Pigment.fromString("#303030"),
           bottomAppBarColor: Pigment.fromString("#212121"),
-          dividerColor: Pigment.fromString("#333333"),
+          dividerColor: Pigment.fromString("#FFFFFF0F"),
         );
       } else { //use the default Light theme
         _appTheme = new ThemeData(
@@ -64,7 +55,7 @@ class MyAppState extends State<MyApp>{
           scaffoldBackgroundColor: Pigment.fromString("#FAFAFA"),
           dialogBackgroundColor: Pigment.fromString("#FFFFFF"),
           bottomAppBarColor: Pigment.fromString("#FAFAFA"),
-          dividerColor: Pigment.fromString("#E9E9E9"),
+          dividerColor: Pigment.fromString("#0000000F"),
         );
       }
     });
