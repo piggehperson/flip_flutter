@@ -555,7 +555,7 @@ class _ListItemState extends State<ListItem> {
             label: const Text("Add a Thing"),
             textColor: Theme.of(context).primaryColor,
             highlightElevation: 0.0,
-            highlightedBorderColor: Colors.transparent,
+            //highlightedBorderColor: Colors.transparent,
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(6.0)),
           )
         )
