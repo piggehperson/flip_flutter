@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/icon"
+        android:layout_centerInParent="true"
+        android:clickable="false"
+        android:src="@drawable/ic_dice_5"
+        android:focusable="false"
+        android:tint="@color/iconColorLight"/>
+<android.support.wearable.view.drawer.WearableDrawerLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    tools:deviceIds="wear">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--android:clickable="true"
+
+        android:onClick="onButtonClick"
+        android:background="?android:attr/selectableItemBackground"-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/clickableView"
+            android:clickable="true"
+            android:layout_centerInParent="true"
+
+            android:onClick="onButtonClick"
+            android:background="?android:attr/selectableItemBackground" />
+
+
+    </RelativeLayout>
+
+    <android.support.wearable.view.drawer.WearableNavigationDrawer
+        android:id="@+id/top_navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLightUIElement"
+        app:navigation_style="single_page"/>
+
+    <!--<android.support.wearable.view.drawer.WearableDrawerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:background="@color/colorAccent"
+        -->
+
+</android.support.wearable.view.drawer.WearableDrawerLayout>
+    </RelativeLayout>

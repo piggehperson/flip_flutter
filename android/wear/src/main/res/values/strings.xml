@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Flip</string>
+    
+    <!--Strings used for navigation drawer-->
+    <string name="drawer_dieroll">Die roll</string>
+    <string name="drawer_coinflip">Coin flip</string>
+</resources>

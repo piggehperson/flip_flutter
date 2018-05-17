@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="270"
+    android:toDegrees="360"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:interpolator="@android:anim/decelerate_interpolator"
+    android:duration="250">
+    <!--android:drawable="@drawable/ic_dice_1_black_24dp"-->
+</rotate>

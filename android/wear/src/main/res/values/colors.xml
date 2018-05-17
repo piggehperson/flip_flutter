@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFEB3B</color>
+    <color name="colorBackground">@color/colorLightBackground</color>
+    <color name="iconColorDark">#DE000000</color>
+    <color name="iconColorLight">#FFF</color>
+
+    <color name="colorDarkBackground">#26160C</color>
+    <color name="colorLightBackground">#4D4712</color>
+    <color name="colorUIElement">#665E17</color>
+    <color name="colorLightUIElement">#A69926</color>
+    <color name="colorAccent">#FFEB3B</color>
+    <!--<color name="iconColorDark">#8A000000</color>-->
+</resources>
