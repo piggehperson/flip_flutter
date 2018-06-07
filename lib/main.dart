@@ -104,9 +104,11 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
+enum AppMode{ die, coin, list, ndie}
+
 class _MyHomePageState extends State<MyHomePage>
     with TickerProviderStateMixin {
-  int index = 0;
+  AppMode index = AppMode.die;
   double appbarElevationScale = 0.0;
 
   @override
@@ -144,17 +146,35 @@ class _MyHomePageState extends State<MyHomePage>
             const BottomNavigationBarItem(icon: const Icon(Icons.account_circle), title: const Text('Coin')),
             const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text('List')),
             const BottomNavigationBarItem(icon: const Icon(Icons.assistant), title: const Text('Custom dice')),
-          ], currentIndex: index, onTap: (int index) {
+          ], currentIndex: index.index, onTap: (int index) {
           switch(index){
+            case 0:
+              setState(() {
+                this.index = AppMode.die;
+                this.appbarElevationScale = 0.0;
+              });
+              break;
+            case 1:
+              setState(() {
+                this.index = AppMode.coin;
+                this.appbarElevationScale = 0.0;
+              });
+              break;
             case 2:
               setState(() {
-                this.index = index;
+                this.index = AppMode.list;
                 this.appbarElevationScale = 1.0;
+              });
+              break;
+            case 3:
+              setState(() {
+                this.index = AppMode.ndie;
+                this.appbarElevationScale = 0.0;
               });
               break;
             default:
               setState(() {
-                this.index = index;
+                //this.index = AppMode.die;
                 this.appbarElevationScale = 0.0;
               });
           }
@@ -164,22 +184,19 @@ class _MyHomePageState extends State<MyHomePage>
       body: new Stack(
         children: <Widget>[
           new Offstage(
-            offstage: index != 0,
-            child: new TickerMode(
-              enabled: index == 0,
-              child: new DicePage(),
-            ),
+            offstage: index != AppMode.die,
+            child: new DicePage(),
           ),
           new Offstage(
-              offstage: index != 1,
+              offstage: index != AppMode.coin,
               child: new CoinPage()
           ),
           new Offstage(
-            offstage: index != 2,
+            offstage: index != AppMode.list,
             child: new ListPage(),
           ),
           new Offstage(
-            offstage: index != 3,
+            offstage: index != AppMode.ndie,
             child: new D20Page(),
           ),
         ],
