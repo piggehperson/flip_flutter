@@ -818,6 +818,7 @@ class _SettingsPageState extends State<SettingsPage> {
       useDarkTheme = isDark;
     });
     _prefs.setBool('use_dark_theme', isDark);
+    _scaffoldKey.currentState.hideCurrentSnackBar();
     if (_wasDark != isDark){
       _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(useDarkTheme
           ? "Close and reopen Flip to apply the dark theme!"
