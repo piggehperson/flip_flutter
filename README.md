@@ -1,6 +1,9 @@
-# flip_flutter
+# Flip
 
-Learning Flutter by porting an Android app
+A Material Design dice rolling app for Android and iOS
+
+## Play Store
+https://play.google.com/store/apps/details?id=com.piggeh.flip
 
 ## Getting Started
 
