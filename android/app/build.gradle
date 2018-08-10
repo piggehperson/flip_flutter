@@ -30,8 +30,8 @@ android {
         applicationId "com.piggeh.flip"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 187
-        versionName "3.1"
+        versionCode 188
+        versionName "3.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
