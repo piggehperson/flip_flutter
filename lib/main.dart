@@ -388,7 +388,7 @@ class _ListPageState extends State<ListPage> {
     );
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (BuildContext context){
         return new AlertDialog(
           title: const Text("Add a Thing"),
